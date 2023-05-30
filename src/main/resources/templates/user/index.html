@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http.//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+</head>
+<body>
+    <div class="asd">
+        <a th:href = "@{/}">To main page</a>
+    </div>
+    <br>
+
+<!--    <table border="1">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>zagolovok1</th>-->
+<!--                <th>zagolovok2</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--            <tr>-->
+<!--                <td>stroka1 zagolovok1</td>-->
+<!--                <td>stroka1 zagolovok2</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>stroka2 zagolovok1</td>-->
+<!--                <td>stroka2 zagolovok2</td>-->
+<!--            </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <th:block th:each="user : ${listUsers}">-->
+<!--        <tr th:align=center>-->
+<!--            <td th:text = "${user.getId()}"></td>-->
+<!--            <td th:text = "${user.getFirstName()}"></td>-->
+<!--            <td th:text = "${user.getLastName()}"></td>-->
+<!--            <td th:text = "${user.getAge()}"></td>-->
+<!--            <td>-->
+<!--                <a th:href="@{/show_single_user(id = ${user.getId()})}"> Просмотреть </a>-->
+<!--                &nbsp / &nbsp-->
+<!--                <a th:href="@{/edit_user(id=${user.getId()})}"> Редактировать </a>-->
+<!--                &nbsp / &nbsp-->
+<!--                <a th:href="@{/delete_user(id=${user.getId()})}"> Удалить </a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </th:block>-->
+
+    <div th:each="user : ${listUsers}">
+        <a th:href="@{/user/{id}(id=${user.getId()})}" th:text="${user.toString()}"  ></a>
+    </div>
+    <br>
+    <div>
+        <a th:href = "@{/addUser}">Add new User</a>
+    </div>
+
+</body>
+</html>

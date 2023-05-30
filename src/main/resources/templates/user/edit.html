@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+</head>
+<body>
+<div>
+    <a th:href = "@{/}">На главную страницу</a>
+</div>
+
+    <form th:method="patch" th:action="@{/user/{id}(id=${user.getId()})}" th:object="${user}">
+
+        <label for="firstname">Enter First Name: </label>-->
+        <input type="text" th:field="${user.firstName}" required id="firstname"/>
+            <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstName Error</div>
+
+        <label for="lastname">Enter Last Name: </label>-->
+        <input type="text" th:field="${user.lastName}" required id="lastname"/>
+            <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName Error</div>
+
+        <label for="age">Enter age: </label>-->
+        <input type="text" th:field="${user.age}" required id="age"/>
+            <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">age Error</div>
+
+        <label for="email">Enter email: </label>-->
+        <input type="text" th:field="${user.email}" required id="email"/>
+            <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</div>
+
+        <br/>
+        <input type="submit" value="Обновить данные!"/>
+    </form>
+
+
+</body>
+</html>
