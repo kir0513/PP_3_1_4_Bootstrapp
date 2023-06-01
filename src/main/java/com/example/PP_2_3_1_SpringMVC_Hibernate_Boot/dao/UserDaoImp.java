@@ -1,8 +1,11 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao;
+
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -24,8 +27,8 @@ public class UserDaoImp implements UserDao {
     @Override
     @Transactional
     public void addUser(User user) {
-       entityManager.persist(user);
-   }
+        entityManager.persist(user);
+    }
 
     @Override
     public User getSingleUserById(int id) {
@@ -44,7 +47,9 @@ public class UserDaoImp implements UserDao {
     @Override
     @Transactional
     public void delete(int id) {
-        entityManager.remove(getSingleUserById(id));
+        entityManager.createQuery("delete from User where id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 }
 
