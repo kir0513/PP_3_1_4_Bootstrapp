@@ -2,6 +2,7 @@ package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import java.io.IOException;
 

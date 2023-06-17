@@ -1,22 +1,27 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model;
 
-import jakarta.persistence.*;
 
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Objects;
+import java.util.*;
 
 
 @Entity
-@Table(name = "users231")
-public class User {
+@Table(name = "user_security")
+public class User implements UserDetails {
     //
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "first_name")
     @NotEmpty(message = "First_Name should not be empty")
@@ -38,22 +43,45 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "passw")
+    private String passw;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
+
     public User() {
     }
 
-    public User(int id, String firstName, String lastName, int age, String email) {
+    public User(Long id, String firstName, String lastName, int age, String email, String passw,
+                boolean enabled) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
+        this.passw = passw;
+        this.enabled = enabled;
     }
 
-    public int getId() {
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+    //метод для добавления роли пользователю
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,6 +117,30 @@ public class User {
         this.email = email;
     }
 
+    public String getPassw() {
+        return passw;
+    }
+
+    public void setPassw(String passw) {
+        this.passw = passw;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -97,6 +149,8 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
+                ", passw='" + passw + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 
@@ -105,12 +159,53 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return getId() == user.getId() && getAge() == user.getAge() && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail());
+        return getId() == user.getId() && getAge() == user.getAge() && isEnabled() == user.isEnabled() && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassw(), user.getPassw());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getAge(), getEmail());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getAge(), getEmail(), getPassw(), isEnabled());
     }
+
+   // Имплементация методов UserDetails
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Role> roles = getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role roleFromSet : roles) {
+            //добавляем в список authorities наименования ролей, связанных с пользователем,
+            //получаемые через метод getAuthority() интерфейса
+            //org.springframework.security.core.GrantedAuthority, который реализовали в
+            //сущности Role. Метод возвращает значние String поля Role.name
+            authorities.add(new SimpleGrantedAuthority(roleFromSet.getAuthority()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return getPassw();
+    }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
 
 }

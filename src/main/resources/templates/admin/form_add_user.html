@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление пользователя</title>
+</head>
+<body>
+
+    <h2>Добавление пользователя</h2>
+    <br>
+    <a th:href="@{/admin}">Назад к списку пользователей</a>
+    <br>
+    <a th:href="@{/logout}">Выйти</a>
+    <br>
+
+    <form th:method="post" th:action="@{/admin/save_or_update_user}" th:object="${user}">
+        <p>
+            <label for="first_name">Имя: </label>
+            <input type="text" th:field="${user.firstName}" id="first_name"/>
+        </p>
+        <p>
+            <label for="last_name">Фамилия: </label>
+            <input type="text" th:field="${user.lastName}" id="last_name"/>
+        </p>
+        <p>
+            <label for="age">Возраст: </label>
+            <input type="text" th:field="${user.age}" id="age"/>
+        </p>
+        <p>
+            <label for="enabled">Активировать пользователя:</label>
+            <input type="checkbox" th:field="${user.enabled}" id="enabled" th:checked="${user.setEnabled(true)}" required/>
+        </p>
+        <p>
+            <label for="login">Логин: </label>
+            <input type="text" th:field="${user.login}" id="login"/>
+        </p>
+        <p>
+            <label for="passw">Пароль: </label>
+            <input type="text" th:field="${user.passw}" id="passw"/>
+        </p>
+
+        <p>Роли:&nbsp
+        <th:block th:each="role: ${roles}" required>
+            <input
+                type="checkbox"
+                th:name="selectedRoles"
+                th:text="${role}"
+                th:value="${role}"
+                th:checked="${role.getName().equals('ROLE_USER')}"
+            />
+        </th:block>
+        </p>
+
+        <br>
+        <input type="submit" value="Добавить пользователя"/>
+    </form>
+
+
+</body>
+</html>

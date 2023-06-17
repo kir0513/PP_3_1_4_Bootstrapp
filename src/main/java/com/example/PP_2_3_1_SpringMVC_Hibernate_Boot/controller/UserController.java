@@ -1,82 +1,111 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.controller;
 
+import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 
 @Controller
-@RequestMapping("/")
 public class UserController {
-
-    //внедряем зависимость userService в контроллер через конструктор
 
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    //метод возвращающий список пользователей. Здесь получаем всех людей из DAO и передаем их на отображение
-    @GetMapping()
-    public String index(Model model) {
-        // model.addAttribute("user", userDaoImp.index());
+
+    @GetMapping("/")
+    public String helloPage() {
+        System.out.println("asdadasdadasdadadadad");
+        return "index";
+    }
+    @GetMapping("/user")
+    public String helloPage(Model model, @AuthenticationPrincipal UserDetails curUser) {
+        User user = userService.getSingleUserByLogin(curUser.getUsername());
+        model.addAttribute("user", user);
+        return "user/curr_user_info";
+    }
+    @GetMapping(value = "/admin")
+    public String index(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        return "user/index";
+        System.out.println("������� �� / �� /index.html");
+        return "admin/list_of_users";
     }
 
-    //поиск пользователя по id из DAO и передаем на представление
-    @GetMapping("user/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    @GetMapping(value = "/login")
+    public String getLoginPage() {
+        System.out.println("������� �� ������ /login �� /login.html");
+        return "login";
+    }
+
+    @RequestMapping("/login_error")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        System.out.println("������� �� ������ /login_error �� /login.html � ���������� \"loginError\"");
+        return "login";
+    }
+
+
+
+    @GetMapping(value = "/admin/list_users")
+    public String showAllUsers(ModelMap model) {
+        List<User> list = userService.getUsers();
+        model.addAttribute("listUsers", list);
+        System.out.println("�������� /admin/list_users (pages/list_of_users.html)");
+        return "admin/list_of_users";
+    }
+
+    @GetMapping(value = "/admin/show_single_user")
+    public String showSingleUser (@RequestParam(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.getSingleUserById(id));
-        return "user/show";
+        return "admin/show_single_user_info";
     }
 
-    //метод, возвращающий html форму для создания нового пользователя
-    @GetMapping("addUser")
-    public String addUser(Model model) {
+    @GetMapping("/admin/add_user")
+    public String addUser(Model model){
         model.addAttribute("user", new User());
-        return "user/addUser";
+        model.addAttribute("roles", userService.getAllRoles());
+        return "admin/form_add_user";
     }
-
-    //метод, принимающий Post запрос создающий пользователя и добавляющий его в БД
-    @PostMapping("addUser")
-    public String createNewUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "user/addUser";
-        } else {
-            userService.addUser(user);
-            return "redirect:/";
+    @PostMapping("/admin/save_or_update_user")
+    public String saveNewOrUpdateExistUser(@ModelAttribute("user") User user,
+                                @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles
+                                 ){
+        if (selectedRoles != null) {
+            Set<Role> roles = new HashSet<>();
+            for (String elemArrSelectedRoles : selectedRoles) {
+                roles.add(userService.getRoleByName(elemArrSelectedRoles));
+            }
+            user.setRoles(roles);
         }
+        userService.saveUser(user);
+        return "redirect:/admin";
     }
 
-    @GetMapping("/user/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    @GetMapping("/admin/edit_user")
+    public String edit(@RequestParam(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.getSingleUserById(id));
-        return "user/edit";
+        model.addAttribute("roles", userService.getAllRoles());
+        return "admin/form_edit_user";
     }
 
-    @PatchMapping("/user/{id}")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
-        if (bindingResult.hasErrors()) {
-            return "user/edit";
-        } else {
-            userService.update(user);
-            return "redirect:/";
-        }
+    @GetMapping(value = "/admin/delete_user")
+    public String deleteUser (@RequestParam(value = "id") Long id, Model model) {
+        userService.deleteUser(id);
+        return "redirect:/admin";
     }
 
-    @DeleteMapping("user/{id}")
-    public String delete(@PathVariable("id") int id) {
-        userService.delete(id);
-        return "redirect:/";
-    }
 }
