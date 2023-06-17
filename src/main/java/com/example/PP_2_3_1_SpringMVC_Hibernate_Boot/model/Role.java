@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Role implements GrantedAuthority {
-
+//
     //поля
     @Id
     @Column(name = "id")

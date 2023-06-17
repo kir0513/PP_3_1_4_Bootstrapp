@@ -17,7 +17,7 @@ import java.util.*;
 @Entity
 @Table(name = "user_security")
 public class User implements UserDetails {
-    //
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

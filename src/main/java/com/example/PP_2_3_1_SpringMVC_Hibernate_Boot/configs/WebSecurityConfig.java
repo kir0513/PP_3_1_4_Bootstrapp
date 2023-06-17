@@ -20,6 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
+    //почему то дает ошибку при внедрении через конструктор
 //    @Autowired
 //    public WebSecurityConfig(@Lazy UserService userService) {
 //        this.userService = userService;
