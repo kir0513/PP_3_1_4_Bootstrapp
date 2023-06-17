@@ -8,7 +8,6 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class Pp231SpringMvcHibernateBootApplication {
-//
     public static void main(String[] args) throws IOException {
         SpringApplication.run(Pp231SpringMvcHibernateBootApplication.class, args);
         openHomePage();

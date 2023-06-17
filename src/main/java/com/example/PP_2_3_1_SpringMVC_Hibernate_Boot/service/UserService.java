@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService  extends UserDetailsService {
-//
+
     List<User> getUsers();
 
     Set<Role> getAllRoles();

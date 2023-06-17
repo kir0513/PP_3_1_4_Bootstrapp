@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Controller
 public class UserController {
-//
+
     private final UserService userService;
 
     @Autowired
@@ -41,20 +41,20 @@ public class UserController {
     public String index(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        System.out.println("Переход по / на /index.html");
+        System.out.println("РџРµСЂРµС…РѕРґ РїРѕ / РЅР° /index.html");
         return "admin/list_of_users";
     }
 
     @GetMapping(value = "/login")
     public String getLoginPage() {
-        System.out.println("Переход по ссылке /login на /login.html");
+        System.out.println("РџРµСЂРµС…РѕРґ РїРѕ СЃСЃС‹Р»РєРµ /login РЅР° /login.html");
         return "login";
     }
 
     @RequestMapping("/login_error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
-        System.out.println("Переход по ссылке /login_error на /login.html с сообщением \"loginError\"");
+        System.out.println("РџРµСЂРµС…РѕРґ РїРѕ СЃСЃС‹Р»РєРµ /login_error РЅР° /login.html СЃ СЃРѕРѕР±С‰РµРЅРёРµРј \"loginError\"");
         return "login";
     }
 
@@ -64,7 +64,7 @@ public class UserController {
     public String showAllUsers(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        System.out.println("Открытие /admin/list_users (pages/list_of_users.html)");
+        System.out.println("РћС‚РєСЂС‹С‚РёРµ /admin/list_users (pages/list_of_users.html)");
         return "admin/list_of_users";
     }
 
