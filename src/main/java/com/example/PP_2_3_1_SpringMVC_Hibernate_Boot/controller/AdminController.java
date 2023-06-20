@@ -52,7 +52,7 @@ public class AdminController {
     }
     @PostMapping("/admin/save_or_update_user")
     public String saveNewOrUpdateExistUser(@ModelAttribute("user") User user,
-                                           @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles){
+                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles){
         if (selectedRoles != null) {
             Set<Role> roles = new HashSet<>();
             for (String elemArrSelectedRoles : selectedRoles) {

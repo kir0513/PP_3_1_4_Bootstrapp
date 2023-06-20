@@ -10,12 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -31,20 +30,6 @@ public class UserDaoImpl implements UserDao{
         return entityManager.createQuery("select u from User u", User.class).getResultList();
     }
 
-//    @Override
-//    public Set<Role> getAllRoles() {
-//        return new HashSet<>(
-//                entityManager.createQuery("select r from Role r", Role.class).getResultList()
-//        );
-//    }
-
-//    @Override
-//    public Role getRoleByName(String name){
-//        TypedQuery<Role> roleName = entityManager.createQuery("select r from Role r where r.name = :name", Role.class);
-//        roleName.setParameter("name", name);
-//        return roleName.getResultList().stream().findFirst().orElse(null);
-//    }
-
     @Override
     @Transactional
     public void saveUser(User user) {
@@ -57,7 +42,7 @@ public class UserDaoImpl implements UserDao{
         newUser.setEmail(user.getEmail());
         //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
         //иначе перезаписываем имеющиеся в user роли в объект newUser
-        if (user.getRoles().isEmpty()){
+        if (user.getRoles().isEmpty()) {
             newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
         } else {
             Set<Role> roles = user.getRoles();
@@ -74,7 +59,7 @@ public class UserDaoImpl implements UserDao{
             newUser.setId(user.getId());
             // если пароль пришел пустой - его не меняли получаем хеш зашифрованного пароля по id объекта user
             // и устанавливаем его для newUser, иначе шифруем String и устанавливаем паролем получившийся хеш для newUser
-            if (user.getPassword()==null) {
+            if (user.getPassword() == null) {
                 newUser.setPassw(getSingleUserById(user.getId()).getPassword());
             } else {
                 newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -82,16 +67,6 @@ public class UserDaoImpl implements UserDao{
             entityManager.merge(newUser);
         }
     }
-
-//    @Override
-//    public User getSingleUserById(Long id) {
-//        TypedQuery<User> typedQuery = entityManager.createQuery("select u from User u where u.id = :id", User.class);
-//        typedQuery.setParameter("id", id);
-//        User userFromDB = typedQuery.getResultList().stream().findFirst().orElse(null);
-//        //для передачи объекта пользователя во вне - затираем его пароль
-//        userFromDB.setPassw(null);
-//        return userFromDB;
-//    }
 
     @Override
     public User getSingleUserById(Long id) {
@@ -112,7 +87,6 @@ public class UserDaoImpl implements UserDao{
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        //entityManager.remove(getSingleUserById(id));
         entityManager.createQuery("delete from User where id = :id")
                 .setParameter("id", id)
                 .executeUpdate();
