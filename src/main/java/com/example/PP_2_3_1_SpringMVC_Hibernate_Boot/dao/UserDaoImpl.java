@@ -31,23 +31,24 @@ public class UserDaoImpl implements UserDao{
         return entityManager.createQuery("select u from User u", User.class).getResultList();
     }
 
-    @Override
-    public Set<Role> getAllRoles() {
-        return new HashSet<>(
-                entityManager.createQuery("select r from Role r", Role.class).getResultList()
-        );
-    }
+//    @Override
+//    public Set<Role> getAllRoles() {
+//        return new HashSet<>(
+//                entityManager.createQuery("select r from Role r", Role.class).getResultList()
+//        );
+//    }
 
-    @Override
-    public Role getRoleByName(String name){
-        TypedQuery<Role> roleName = entityManager.createQuery("select r from Role r where r.name = :name", Role.class);
-        roleName.setParameter("name", name);
-        return roleName.getResultList().stream().findFirst().orElse(null);
-    }
+//    @Override
+//    public Role getRoleByName(String name){
+//        TypedQuery<Role> roleName = entityManager.createQuery("select r from Role r where r.name = :name", Role.class);
+//        roleName.setParameter("name", name);
+//        return roleName.getResultList().stream().findFirst().orElse(null);
+//    }
 
     @Override
     @Transactional
     public void saveUser(User user) {
+        RoleDaoImpl roleDao = new RoleDaoImpl();
         User newUser = new User();
         newUser.setAge(user.getAge());
         newUser.setEnabled(user.isEnabled());
@@ -57,11 +58,11 @@ public class UserDaoImpl implements UserDao{
         //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
         //иначе перезаписываем имеющиеся в user роли в объект newUser
         if (user.getRoles().isEmpty()){
-            newUser.addRole(getRoleByName("ROLE_USER"));
+            newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
         } else {
             Set<Role> roles = user.getRoles();
             for (Role roleInSet : roles) {
-                newUser.addRole(getRoleByName(roleInSet.getName()));
+                newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
             }
         }
 
@@ -111,6 +112,10 @@ public class UserDaoImpl implements UserDao{
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        entityManager.remove(getSingleUserById(id));
+        //entityManager.remove(getSingleUserById(id));
+        entityManager.createQuery("delete from User where id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
+
 }

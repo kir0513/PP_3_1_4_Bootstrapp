@@ -2,6 +2,7 @@ package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.controller;
 
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
+import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service.RoleService;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,11 +18,12 @@ import java.util.Set;
 
 @Controller
 public class UserController {
-
+    private final RoleService roleService;
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(RoleService roleService, UserService userService) {
+        this.roleService = roleService;
         this.userService = userService;
     }
 
@@ -77,17 +79,16 @@ public class UserController {
     @GetMapping("/admin/add_user")
     public String addUser(Model model){
         model.addAttribute("user", new User());
-        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/form_add_user";
     }
     @PostMapping("/admin/save_or_update_user")
     public String saveNewOrUpdateExistUser(@ModelAttribute("user") User user,
-                                @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles
-                                 ){
+             @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles){
         if (selectedRoles != null) {
             Set<Role> roles = new HashSet<>();
             for (String elemArrSelectedRoles : selectedRoles) {
-                roles.add(userService.getRoleByName(elemArrSelectedRoles));
+                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
             }
             user.setRoles(roles);
         }
@@ -98,7 +99,7 @@ public class UserController {
     @GetMapping("/admin/edit_user")
     public String edit(@RequestParam(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.getSingleUserById(id));
-        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/form_edit_user";
     }
 

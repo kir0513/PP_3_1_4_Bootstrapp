@@ -12,7 +12,7 @@ public interface UserDao {
 
     List<User> getUsers();
 
-    Set<Role> getAllRoles();
+ //   Set<Role> getAllRoles();
 
     void saveUser(User user);
 
@@ -22,7 +22,7 @@ public interface UserDao {
 
     void deleteUser(Long id);
 
-    Role getRoleByName(String name);
+   // Role getRoleByName(String name);
 
 
 }

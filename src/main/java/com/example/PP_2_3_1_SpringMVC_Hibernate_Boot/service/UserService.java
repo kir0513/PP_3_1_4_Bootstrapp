@@ -12,7 +12,7 @@ public interface UserService  extends UserDetailsService {
 
     List<User> getUsers();
 
-    Set<Role> getAllRoles();
+   // Set<Role> getAllRoles();
 
     void saveUser(User user);
 
@@ -22,6 +22,6 @@ public interface UserService  extends UserDetailsService {
 
     void deleteUser(Long id);
 
-    public Role getRoleByName(String name);
+   // public Role getRoleByName(String name);
 
 }
