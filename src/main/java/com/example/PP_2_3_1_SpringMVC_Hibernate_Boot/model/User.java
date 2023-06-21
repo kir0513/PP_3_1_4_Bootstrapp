@@ -64,7 +64,8 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
+    //@ManyToMany(fetch = FetchType.Lazy) не заходит на /user и /admin
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -27,10 +27,6 @@ public class UserServiceImpl implements UserService{
         return userDao.getUsers();
     }
 
-//    @Override
-//    public Set<Role> getAllRoles() {
-//        return userDao.getAllRoles();
-//    }
 
     @Override
     public void saveUser(User user) {
@@ -60,9 +56,4 @@ public class UserServiceImpl implements UserService{
         }
         return user;
     }
-
-//    @Override
-//    public Role getRoleByName(String name) {
-//        return userDao.getRoleByName(name);
-//    }
 }

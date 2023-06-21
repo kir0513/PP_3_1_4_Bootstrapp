@@ -40,8 +40,8 @@ public class UserDaoImpl implements UserDao {
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
-        //РїСЂРёСЃРІР°РёРІР°РµРј РѕР±СЉРµРєС‚Сѓ newUser СЂРѕР»СЊ USER РµСЃР»Рё Сѓ РѕР±СЉРµРєС‚Р° user, РїРµСЂРµРґР°РЅРЅРѕРіРѕ РІ РјРµС‚РѕРґ РїСѓСЃС‚Р°СЏ СЂРѕР»СЊ
-        //РёРЅР°С‡Рµ РїРµСЂРµР·Р°РїРёСЃС‹РІР°РµРј РёРјРµСЋС‰РёРµСЃСЏ РІ user СЂРѕР»Рё РІ РѕР±СЉРµРєС‚ newUser
+        //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
+        //иначе перезаписываем имеющиеся в user роли в объект newUser
         if (user.getRoles().isEmpty()) {
             newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
         } else {
@@ -50,15 +50,16 @@ public class UserDaoImpl implements UserDao {
                 newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
             }
         }
+//        entityManager.persist(user);
 
-        // Р•СЃР»Рё РѕР±СЉРµРєС‚ user РёРјРµРµС‚ id, РѕР±РЅРѕРІР»СЏРµРј РёРјРµСЋС‰СѓСЋСЃСЏ Р·Р°РїРёСЃСЊ РІ Р‘Р”, РёРЅР°С‡Рµ СЃРѕС…СЂР°РЅСЏРµРј РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ
+        // Если объект user имеет id, обновляем имеющуюся запись в БД, иначе сохраняем новую запись
         if (user.getId() == null) {
             newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
             entityManager.persist(newUser);
         } else {
             newUser.setId(user.getId());
-            // РµСЃР»Рё РїР°СЂРѕР»СЊ РїСЂРёС€РµР» РїСѓСЃС‚РѕР№ - РµРіРѕ РЅРµ РјРµРЅСЏР»Рё РїРѕР»СѓС‡Р°РµРј С…РµС€ Р·Р°С€РёС„СЂРѕРІР°РЅРЅРѕРіРѕ РїР°СЂРѕР»СЏ РїРѕ id РѕР±СЉРµРєС‚Р° user
-            // Рё СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РµРіРѕ РґР»СЏ newUser, РёРЅР°С‡Рµ С€РёС„СЂСѓРµРј String Рё СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РїР°СЂРѕР»РµРј РїРѕР»СѓС‡РёРІС€РёР№СЃСЏ С…РµС€ РґР»СЏ newUser
+            // если пароль пришел пустой - его не меняли получаем хеш зашифрованного пароля по id объекта user
+            // и устанавливаем его для newUser, иначе шифруем String и устанавливаем паролем получившийся хеш для newUser
             if (user.getPassword() == null) {
                 newUser.setPassw(getSingleUserById(user.getId()).getPassword());
             } else {
