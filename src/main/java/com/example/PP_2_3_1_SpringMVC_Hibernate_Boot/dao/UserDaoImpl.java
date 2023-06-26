@@ -70,12 +70,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional
+    public void update(User user) {
+        entityManager.merge(user);
+    }
+
+    @Override
     public User getSingleUserById(Long id) {
-        TypedQuery<User> typedQuery = entityManager.createQuery("select u from User u where u.id = :id", User.class);
-        typedQuery.setParameter("id", id);
-        User user = typedQuery.getResultList().stream().findFirst().orElse(null);
-        user.setPassw(null);
-        return user;
+//        TypedQuery<User> typedQuery = entityManager.createQuery("select u from User u where u.id = :id", User.class);
+//        typedQuery.setParameter("id", id);
+//        User user = typedQuery.getResultList().stream().findFirst().orElse(null);
+//        user.setPassw(null);
+//        return user;
+        return entityManager.find(User.class, id);
     }
 
     @Override

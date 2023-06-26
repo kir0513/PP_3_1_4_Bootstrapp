@@ -15,6 +15,7 @@ public interface UserDao {
  //   Set<Role> getAllRoles();
 
     void saveUser(User user);
+    void update(User user);
 
     User getSingleUserById(Long id);
 

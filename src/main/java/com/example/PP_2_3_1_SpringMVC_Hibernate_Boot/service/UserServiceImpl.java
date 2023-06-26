@@ -8,18 +8,22 @@ import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService{
-
+@Transactional
+public class UserServiceImpl implements UserService {
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDao userDao;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userDao = userDao;
     }
 
@@ -49,6 +53,26 @@ public class UserServiceImpl implements UserService{
             }
         }
         userDao.saveUser(user);
+    }
+
+    @Override
+    public void update(User user) {
+//        User newUser = new User();
+//        if (user.getId() == null) {
+//            newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+//            entityManager.persist(newUser);
+//        } else {
+//            newUser.setId(user.getId());
+//            // если пароль пришел пустой - его не меняли получаем хеш зашифрованного пароля по id объекта user
+//            // и устанавливаем его для newUser, иначе шифруем String и устанавливаем паролем получившийся хеш для newUser
+//            if (user.getPassword() == null) {
+//                newUser.setPassw(getSingleUserById(user.getId()).getPassword());
+//            } else {
+//                newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+//            }
+//            entityManager.merge(newUser);
+//        }
+        userDao.update(user);
     }
 
     @Override
