@@ -64,6 +64,7 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
+    //@ManyToMany
     @ManyToMany(fetch = FetchType.EAGER)
     //@ManyToMany(fetch = FetchType.Lazy) не заходит на /user и /admin
     @JoinTable(
@@ -171,15 +172,23 @@ public class User implements UserDetails {
    // Имплементация методов UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = getRoles();
+        System.out.println("pytaemsya poluchit roli");
+        Set<Role> roles = this.getRoles();
+        System.out.println("poluchili roli");
+        System.out.println("gjkexbkb hjkb");
+        System.out.println(1);
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        System.out.println(2);
+        System.out.println("roles: "+roles.toString());
         for (Role roleFromSet : roles) {
+            System.out.println(4);
             //добавляем в список authorities наименования ролей, связанных с пользователем,
             //получаемые через метод getAuthority() интерфейса
             //org.springframework.security.core.GrantedAuthority, который реализовали в
             //сущности Role. Метод возвращает значние String поля Role.name
             authorities.add(new SimpleGrantedAuthority(roleFromSet.getAuthority()));
         }
+        System.out.println("zapisali roli");
         return authorities;
     }
 
