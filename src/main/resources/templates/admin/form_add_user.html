@@ -12,9 +12,8 @@
     <br>
     <a th:href="@{/logout}">Выйти</a>
     <br>
-
-    <form th:method="post" th:action="@{/admin/save_or_update_user}" th:object="${user}">
-        <p>
+    <form th:method="post" th:action="@{/admin/addUser}" th:object="${user}">
+           <p>
             <label for="first_name">Имя: </label>
             <input type="text" th:field="${user.firstName}" id="first_name"/>
         </p>

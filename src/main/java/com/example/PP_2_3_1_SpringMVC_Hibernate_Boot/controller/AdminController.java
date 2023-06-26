@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,19 +50,28 @@ public class AdminController {
         model.addAttribute("roles", roleService.getAllRoles());
         return "admin/form_add_user";
     }
-    @PostMapping("/save_or_update_user")
-    public String saveNewOrUpdateExistUser(@ModelAttribute("user") User user,
-                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles){
-        if (selectedRoles != null) {
-            Set<Role> roles = new HashSet<>();
-            for (String elemArrSelectedRoles : selectedRoles) {
-                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
-            }
-            user.setRoles(roles);
+    @PostMapping("addUser")
+    public String createNewUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/form_add_user";
+        } else {
+            userService.saveUser(user);
+            return "redirect:/admin";
         }
-        userService.saveUser(user);
-        return "redirect:/admin";
     }
+//    @PostMapping("/save_or_update_user")
+//    public String saveNewOrUpdateExistUser(@ModelAttribute("user") User user,
+//                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles){
+//        if (selectedRoles != null) {
+//            Set<Role> roles = new HashSet<>();
+//            for (String elemArrSelectedRoles : selectedRoles) {
+//                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
+//            }
+//            user.setRoles(roles);
+//        }
+//        userService.saveUser(user);
+//        return "redirect:/admin";
+//    }
     @GetMapping("/edit_user")
     public String edit(@RequestParam(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.getSingleUserById(id));
