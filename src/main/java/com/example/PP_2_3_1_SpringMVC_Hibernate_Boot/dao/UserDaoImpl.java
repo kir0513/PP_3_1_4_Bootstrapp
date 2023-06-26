@@ -90,6 +90,7 @@ public class UserDaoImpl implements UserDao {
         TypedQuery<User> typedQuery = entityManager.createQuery("select u from User u where u.email = :email", User.class);
         typedQuery.setParameter("email", email);
         return typedQuery.getResultList().stream().findFirst().orElse(null);
+       // return entityManager.find(User.class, email);    не работает
     }
 
     @Override
