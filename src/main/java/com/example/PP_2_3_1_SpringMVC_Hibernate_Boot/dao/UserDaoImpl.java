@@ -33,40 +33,40 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional
     public void saveUser(User user) {
-        RoleDaoImpl roleDao = new RoleDaoImpl();
-        User newUser = new User();
-        newUser.setAge(user.getAge());
-        newUser.setEnabled(user.isEnabled());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
-        //иначе перезаписываем имеющиеся в user роли в объект newUser
-        if (user.getRoles().isEmpty()) {
-            newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
-        } else {
-            Set<Role> roles = user.getRoles();
-            for (Role roleInSet : roles) {
-                newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
-            }
-        }
-//        entityManager.persist(user);
+//        RoleDaoImpl roleDao = new RoleDaoImpl();
+//        User newUser = new User();
+//        newUser.setAge(user.getAge());
+//        newUser.setEnabled(user.isEnabled());
+//        newUser.setFirstName(user.getFirstName());
+//        newUser.setLastName(user.getLastName());
+//        newUser.setEmail(user.getEmail());
+//        //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
+//        //иначе перезаписываем имеющиеся в user роли в объект newUser
+//        if (user.getRoles().isEmpty()) {
+//            newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
+//        } else {
+//            Set<Role> roles = user.getRoles();
+//            for (Role roleInSet : roles) {
+//                newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
+//            }
+//        }
+        entityManager.persist(user);
 
         // Если объект user имеет id, обновляем имеющуюся запись в БД, иначе сохраняем новую запись
-        if (user.getId() == null) {
-            newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-            entityManager.persist(newUser);
-        } else {
-            newUser.setId(user.getId());
-            // если пароль пришел пустой - его не меняли получаем хеш зашифрованного пароля по id объекта user
-            // и устанавливаем его для newUser, иначе шифруем String и устанавливаем паролем получившийся хеш для newUser
-            if (user.getPassword() == null) {
-                newUser.setPassw(getSingleUserById(user.getId()).getPassword());
-            } else {
-                newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-            }
-            entityManager.merge(newUser);
-        }
+//        if (user.getId() == null) {
+//            newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+//            entityManager.persist(newUser);
+//        } else {
+//            newUser.setId(user.getId());
+//            // если пароль пришел пустой - его не меняли получаем хеш зашифрованного пароля по id объекта user
+//            // и устанавливаем его для newUser, иначе шифруем String и устанавливаем паролем получившийся хеш для newUser
+//            if (user.getPassword() == null) {
+//                newUser.setPassw(getSingleUserById(user.getId()).getPassword());
+//            } else {
+//                newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+//            }
+//            entityManager.merge(newUser);
+//        }
     }
 
     @Override

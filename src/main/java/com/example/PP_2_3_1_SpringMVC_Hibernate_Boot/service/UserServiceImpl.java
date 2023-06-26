@@ -1,6 +1,7 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service;
 
 
+import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.RoleDaoImpl;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.UserDao;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
@@ -30,6 +31,23 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void saveUser(User user) {
+        RoleDaoImpl roleDao = new RoleDaoImpl();
+        User newUser = new User();
+        newUser.setAge(user.getAge());
+        newUser.setEnabled(user.isEnabled());
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+        newUser.setEmail(user.getEmail());
+        //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
+        //иначе перезаписываем имеющиеся в user роли в объект newUser
+        if (user.getRoles().isEmpty()) {
+            newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
+        } else {
+            Set<Role> roles = user.getRoles();
+            for (Role roleInSet : roles) {
+                newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
+            }
+        }
         userDao.saveUser(user);
     }
 
