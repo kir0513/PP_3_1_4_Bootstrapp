@@ -16,6 +16,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "user_security")
+//@NamedEntityGraph(name = "user-role",  attributeNodes = {@NamedAttributeNode("roles")})
 public class User implements UserDetails {
 //
     @Id
@@ -64,9 +65,9 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    //@ManyToMany
-    @ManyToMany(fetch = FetchType.EAGER)
-    //@ManyToMany(fetch = FetchType.Lazy) не заходит на /user и /admin
+    @ManyToMany
+   //@ManyToMany(fetch = FetchType.EAGER)
+   // @ManyToMany(fetch = FetchType.LAZY) //не заходит на /user и /admin
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -175,6 +176,7 @@ public class User implements UserDetails {
         System.out.println("pytaemsya poluchit roli");
         Set<Role> roles = this.getRoles();
         System.out.println("poluchili roli");
+        System.out.println("roles: "+roles.toString());
         System.out.println("gjkexbkb hjkb");
         System.out.println(1);
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

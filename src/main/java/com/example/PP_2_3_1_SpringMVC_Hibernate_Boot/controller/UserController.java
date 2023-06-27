@@ -36,14 +36,14 @@ public class UserController {
 
     @GetMapping(value = "/login")
     public String getLoginPage() {
-        System.out.println("Переход по ссылке /login на /login.html");
+        System.out.println("Perehod po ssylke /login na /login.html");
         return "login";
     }
 
     @RequestMapping("/login_error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
-        System.out.println("Переход по ссылке /login_error на /login.html с сообщением \"loginError\"");
+        System.out.println("Perehod po ssylke /login_error na /login.html s soobseniem \"loginError\"");
         return "login";
     }
 }

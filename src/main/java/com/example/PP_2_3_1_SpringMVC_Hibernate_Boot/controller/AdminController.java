@@ -31,7 +31,7 @@ public class AdminController {
     public String index(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        System.out.println("Переход по / на /index.html");
+        System.out.println("Perehd po / na /index.html");
         return "admin/list_of_users";
     }
 
@@ -39,7 +39,7 @@ public class AdminController {
     public String showAllUsers(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        System.out.println("Открытие /admin/list_users (pages/list_of_users.html)");
+        System.out.println("Open /admin/list_users (pages/list_of_users.html)");
         return "admin/list_of_users";
     }
 
