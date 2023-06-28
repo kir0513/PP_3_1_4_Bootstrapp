@@ -88,7 +88,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getSingleUserByLogin(String email) {
        // TypedQuery<User> typedQuery = entityManager.createQuery("select u from User u where u.email = :email", User.class);
-        TypedQuery<User> typedQuery = entityManager.createQuery("select user  from User user left join fetch user.roles where user.email = :email", User.class);
+        TypedQuery<User> typedQuery = entityManager.createQuery(
+                "select user  from User user left join fetch user.roles where user.email = :email", User.class);
         typedQuery.setParameter("email", email);
         return typedQuery.getSingleResult();
        // return typedQuery.getResultList().stream().findFirst().orElse(null);

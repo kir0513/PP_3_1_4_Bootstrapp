@@ -42,6 +42,10 @@ public class UserServiceImpl implements UserService {
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
+        //кодируем пароль нового пользователя
+        newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+
+        System.out.println("Password newuser " + newUser.getPassw());
         //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
         //иначе перезаписываем имеющиеся в user роли в объект newUser
         if (user.getRoles().isEmpty()) {
@@ -52,7 +56,8 @@ public class UserServiceImpl implements UserService {
                 newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
             }
         }
-        userDao.saveUser(user);
+        userDao.saveUser(newUser);
+        System.out.println(newUser.getPassw());
     }
 
     @Override
