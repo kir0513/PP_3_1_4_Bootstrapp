@@ -12,10 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Configuration
 @EnableWebSecurity
+@Transactional
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
       private final UserService userService;
@@ -66,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
-//        System.out.println(auth.userDetailsService(userService).getUserDetailsService().getAllRoles());
+        System.out.println(auth.userDetailsService(userService).getUserDetailsService().getUsers());
     }
 
 }
