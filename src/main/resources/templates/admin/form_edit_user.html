@@ -33,8 +33,8 @@
       <label for="login">Email: </label>
       <input type="text" th:field="${user.email}" id="login"/>
     </p>
-      <label for="passw">Пароль: </label>
-      <input type="text" th:field="${user.passw}" id="passw"/>
+      <label for="password">Пароль: </label>
+      <input type="text" th:field="${user.passw}" id="password"/>
       <label> (вводить только для изменения, чтобы оставить пароль прежним - оставить пустым)</label>
     </p>
     </p>
@@ -48,7 +48,7 @@
                 th:name="selectedRoles"
                 th:text="${role}"
                 th:value="${role}"
-                th:checked="${user.roles.contains(role)}"
+                th:checked="${user.roles.contains(roles)}"
         />
       </th:block>
 

@@ -67,11 +67,11 @@ public class User implements UserDetails {
 
    // @ManyToMany //работает
    //@ManyToMany(fetch = FetchType.EAGER)
-    @ManyToMany(fetch = FetchType.LAZY) //не заходит на /user и /admin
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = "user_id", nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false, updatable = false)
     )
     private Set<Role> roles = new HashSet<>();
 

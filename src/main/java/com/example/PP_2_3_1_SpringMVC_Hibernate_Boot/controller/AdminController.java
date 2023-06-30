@@ -57,11 +57,11 @@ public class AdminController {
     }
 
     @PostMapping("addUser")
-    public String createNewUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+    public String createNewUser(@ModelAttribute("user") @Valid User user,// BindingResult bindingResult,
                                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-        if (bindingResult.hasErrors()) {
-            return "/admin/form_add_user";
-        } else {
+//        if (bindingResult.hasErrors()) {
+//            return "/admin/form_add_user";
+//        } else {
             if (selectedRoles != null) {
                 Set<Role> roles = new HashSet<>();
                 for (String elemArrSelectedRoles : selectedRoles) {
@@ -69,7 +69,7 @@ public class AdminController {
                 }
                 user.setRoles(roles);
             }
-        }
+       // }
         userService.saveUser(user);
         return "redirect:/admin";
     }
@@ -104,7 +104,8 @@ public class AdminController {
     }
 
     @PatchMapping("/form_edit_user")
-    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+    public String update(@ModelAttribute("user") @Valid User user,
+                         //BindingResult bindingResult,
 //                         @PathVariable("id") Long id,
                          @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
 //        System.out.println("@PatchMapping(form_edit_user");

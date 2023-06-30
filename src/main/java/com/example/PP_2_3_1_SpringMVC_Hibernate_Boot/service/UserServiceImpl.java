@@ -1,6 +1,7 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service;
 
 
+import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.RoleDao;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.RoleDaoImpl;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.UserDao;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
@@ -20,11 +21,12 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDao userDao;
-
+    private  final RoleDao roleDao;
     @Autowired
-    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao) {
+    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao, RoleDao roleDao) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userDao = userDao;
+        this.roleDao = roleDao;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
-        RoleDaoImpl roleDao = new RoleDaoImpl();
+       // RoleDaoImpl roleDao = new RoleDaoImpl();
         User newUser = new User();
         newUser.setAge(user.getAge());
         newUser.setEnabled(user.isEnabled());
@@ -56,8 +58,11 @@ public class UserServiceImpl implements UserService {
                 newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
             }
         }
+        //сохраняем роль
+
         userDao.saveUser(newUser);
         System.out.println(newUser.getPassw());
+        System.out.println(newUser.getRoles());
     }
 
     @Override
@@ -75,8 +80,13 @@ public class UserServiceImpl implements UserService {
 //            } else {
 //                newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
 //            }
-//            entityManager.merge(newUser);
+//            entityManager.merge(newUser
 //        }
+//        if (user.getPassword() == null) {
+//                user.setPassw(getSingleUserById(user.getId()).getPassword());
+//            } else {
+                user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+  //          }
         userDao.update(user);
     }
 
