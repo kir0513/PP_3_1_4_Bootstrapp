@@ -12,8 +12,6 @@ public interface UserDao {
 
     List<User> getUsers();
 
- //   Set<Role> getAllRoles();
-
     void saveUser(User user);
     void update(User user);
 
@@ -22,8 +20,6 @@ public interface UserDao {
     User getSingleUserByLogin(String login);
 
     void deleteUser(Long id);
-
-   // Role getRoleByName(String name);
 
 
 }

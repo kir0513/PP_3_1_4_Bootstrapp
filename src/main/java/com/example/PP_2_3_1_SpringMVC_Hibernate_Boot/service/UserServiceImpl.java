@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
 @Transactional
     @Override
     public void saveUser(User user) {
-       // RoleDaoImpl roleDao = new RoleDaoImpl();
         User newUser = new User();
         newUser.setAge(user.getAge());
         newUser.setEnabled(user.isEnabled());
@@ -57,34 +56,13 @@ public class UserServiceImpl implements UserService {
                 newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
             }
         }
-        //сохраняем роль
-
         userDao.saveUser(newUser);
-        System.out.println(newUser.getPassw());
-        System.out.println(newUser.getRoles());
-    }
+            }
     @Transactional
     @Override
     public void update(User user) {
-//        User newUser = new User();
-//        if (user.getId() == null) {
-//            newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-//            entityManager.persist(newUser);
-//        } else {
-//            newUser.setId(user.getId());
-//            // если пароль пришел пустой - его не меняли получаем хеш зашифрованного пароля по id объекта user
-//            // и устанавливаем его для newUser, иначе шифруем String и устанавливаем паролем получившийся хеш для newUser
-//            if (user.getPassword() == null) {
-//                newUser.setPassw(getSingleUserById(user.getId()).getPassword());
-//            } else {
-//                newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-//            }
-//            entityManager.merge(newUser
-//        }
-//        if (user.getPassword() == null) {
-//                user.setPassw(getSingleUserById(user.getId()).getPassword());
-//            } else {
-        if (user.getPassword().equals("")) {//""
+
+        if (user.getPassword().equals("")) {
             user.setPassw(getSingleUserById(user.getId()).getPassword());
         } else {
                 user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -110,12 +88,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        System.out.println("Vozvrashaem object UserDetail");
         User user = userDao.getSingleUserByLogin(login);
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь с таким логином не найден");
         }
-        System.out.println("User + " + user);
+
             return user;
 
 

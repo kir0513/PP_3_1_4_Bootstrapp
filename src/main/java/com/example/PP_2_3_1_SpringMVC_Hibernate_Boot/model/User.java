@@ -64,7 +64,7 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-   // @ManyToMany //работает
+
    //@ManyToMany(fetch = FetchType.EAGER)
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(
