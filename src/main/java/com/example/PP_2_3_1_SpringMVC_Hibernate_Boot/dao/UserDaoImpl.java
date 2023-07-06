@@ -72,11 +72,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional
     public void update(User user) {
+        System.out.println("Update user");
         entityManager.merge(user);
     }
 
     @Override
     public User getSingleUserById(Long id) {
+        System.out.println("Poluchaem usera po id");
 //        TypedQuery<User> typedQuery = entityManager.createQuery("select u from User u where u.id = :id", User.class);
 //        typedQuery.setParameter("id", id);
 //        User user = typedQuery.getResultList().stream().findFirst().orElse(null);
@@ -87,10 +89,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getSingleUserByLogin(String email) {
+        System.out.println("Poluchaem usera po loginu");
        // TypedQuery<User> typedQuery = entityManager.createQuery("select u from User u where u.email = :email", User.class);
         TypedQuery<User> typedQuery = entityManager.createQuery(
                 "select user  from User user left join fetch user.roles where user.email = :email", User.class);
         typedQuery.setParameter("email", email);
+
         return typedQuery.getSingleResult();
        // return typedQuery.getResultList().stream().findFirst().orElse(null);
        // return entityManager.find(User.class, email);    не работает
@@ -99,6 +103,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional
     public void deleteUser(Long id) {
+        System.out.println("Udalyaem usera");
         entityManager.createQuery("delete from User where id = :id")
                 .setParameter("id", id)
                 .executeUpdate();

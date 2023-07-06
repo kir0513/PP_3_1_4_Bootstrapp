@@ -2,7 +2,6 @@ package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service;
 
 
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.RoleDao;
-import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.RoleDaoImpl;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.UserDao;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getUsers();
     }
 
-
+@Transactional
     @Override
     public void saveUser(User user) {
        // RoleDaoImpl roleDao = new RoleDaoImpl();
@@ -64,7 +63,7 @@ public class UserServiceImpl implements UserService {
         System.out.println(newUser.getPassw());
         System.out.println(newUser.getRoles());
     }
-
+    @Transactional
     @Override
     public void update(User user) {
 //        User newUser = new User();
@@ -85,8 +84,11 @@ public class UserServiceImpl implements UserService {
 //        if (user.getPassword() == null) {
 //                user.setPassw(getSingleUserById(user.getId()).getPassword());
 //            } else {
+        if (user.getPassword().equals("")) {//""
+            user.setPassw(getSingleUserById(user.getId()).getPassword());
+        } else {
                 user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-  //          }
+            }
         userDao.update(user);
     }
 
@@ -100,6 +102,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getSingleUserByLogin(login);
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long id) {
         userDao.deleteUser(id);
@@ -107,10 +110,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        System.out.println("Vozvrashaem object UserDetail");
         User user = userDao.getSingleUserByLogin(login);
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь с таким логином не найден");
         }
-        return user;
+        System.out.println("User + " + user);
+            return user;
+
+
     }
 }

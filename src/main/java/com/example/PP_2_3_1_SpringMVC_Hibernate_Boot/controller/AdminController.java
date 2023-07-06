@@ -57,11 +57,8 @@ public class AdminController {
     }
 
     @PostMapping("addUser")
-    public String createNewUser(@ModelAttribute("user") @Valid User user,// BindingResult bindingResult,
+    public String createNewUser(@ModelAttribute("user") @Valid User user,
                                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-//        if (bindingResult.hasErrors()) {
-//            return "/admin/form_add_user";
-//        } else {
             if (selectedRoles != null) {
                 Set<Role> roles = new HashSet<>();
                 for (String elemArrSelectedRoles : selectedRoles) {
@@ -69,35 +66,16 @@ public class AdminController {
                 }
                 user.setRoles(roles);
             }
-       // }
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
 
 
-    //    @PostMapping("/save_or_update_user")
-//    public String saveNewOrUpdateExistUser(@ModelAttribute("user") User user,
-//                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles){
-//        if (selectedRoles != null) {
-//            Set<Role> roles = new HashSet<>();
-//            for (String elemArrSelectedRoles : selectedRoles) {
-//                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
-//            }
-//            user.setRoles(roles);
-//        }
-//        userService.saveUser(user);
-//        return "redirect:/admin";
-//    }
-//    @GetMapping("/edit_user")
-//    public String edit(@RequestParam(value = "id") Long id, Model model) {
-//        model.addAttribute("user", userService.getSingleUserById(id));
-//        model.addAttribute("roles", roleService.getAllRoles());
-//        return "admin/form_edit_user";
-//    }
+
     @GetMapping("/form_edit_user")
     public String edit(@RequestParam(value = "id") Long id, Model model) {
-        System.out.println("!!!!!!");
+        System.out.println("EDIT");
         model.addAttribute("user", userService.getSingleUserById(id));
         model.addAttribute("roles", roleService.getAllRoles());
         return "admin/form_edit_user";
@@ -105,21 +83,8 @@ public class AdminController {
 
     @PatchMapping("/form_edit_user")
     public String update(@ModelAttribute("user") @Valid User user,
-                         //BindingResult bindingResult,
-//                         @PathVariable("id") Long id,
                          @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-//        System.out.println("@PatchMapping(form_edit_user");
-//        if (bindingResult.hasErrors()) {
-//            return "/admin/form_edit_user";
-//        } else {
-//            if (selectedRoles != null) {
-//                Set<Role> roles = new HashSet<>();
-//                for (String elemArrSelectedRoles : selectedRoles) {
-//                    roles.add(roleService.getRoleByName(elemArrSelectedRoles));
-//                }
-//                user.setRoles(roles);
-//            }
-//        }
+        System.out.println("Passw from front: "+ user.getPassword());
         if (selectedRoles != null) {
             Set<Role> roles = new HashSet<>();
             for (String elemArrSelectedRoles : selectedRoles) {

@@ -54,8 +54,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, int age, String email, String passw,
-                boolean enabled) {
+    public User(Long id, String firstName, String lastName, int age, String email, String passw) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -74,6 +73,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false, updatable = false)
     )
     private Set<Role> roles = new HashSet<>();
+
+    public User(String email, String passw, Set<Role> roles) {
+    }
 
     //метод для добавления роли пользователю
     public void addRole(Role role) {
