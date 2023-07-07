@@ -21,12 +21,11 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping("/")
     public String helloPage() {
-        System.out.println("asdadasdadasdadadadad");
         return "index";
     }
+
     @GetMapping("/user")
     public String helloPage(Model model, @AuthenticationPrincipal UserDetails curUser) {
         User user = userService.getSingleUserByLogin(curUser.getUsername());
@@ -36,14 +35,12 @@ public class UserController {
 
     @GetMapping(value = "/login")
     public String getLoginPage() {
-        System.out.println("Perehod po ssylke /login na /login.html");
         return "login";
     }
 
     @RequestMapping("/login_error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
-        System.out.println("Perehod po ssylke /login_error na /login.html s soobseniem \"loginError\"");
         return "login";
     }
 }

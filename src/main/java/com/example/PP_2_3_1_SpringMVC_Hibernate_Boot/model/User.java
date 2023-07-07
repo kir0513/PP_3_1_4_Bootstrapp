@@ -16,9 +16,8 @@ import java.util.*;
 
 @Entity
 @Table(name = "user_security")
-//@NamedEntityGraph(name = "user-role",  attributeNodes = {@NamedAttributeNode("roles")})
 public class User implements UserDetails {
-//
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -64,8 +63,6 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-
-   //@ManyToMany(fetch = FetchType.EAGER)
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
@@ -77,7 +74,6 @@ public class User implements UserDetails {
     public User(String email, String passw, Set<Role> roles) {
     }
 
-    //метод для добавления роли пользователю
     public void addRole(Role role) {
         this.roles.add(role);
     }
@@ -172,27 +168,14 @@ public class User implements UserDetails {
         return Objects.hash(getId(), getFirstName(), getLastName(), getAge(), getEmail(), getPassw(), isEnabled());
     }
 
-   // Имплементация методов UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println("pytaemsya poluchit roli");
         Set<Role> roles = this.getRoles();
-        System.out.println("poluchili roli");
         System.out.println("roles: "+roles.toString());
-        System.out.println("gjkexbkb hjkb");
-        System.out.println(1);
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        System.out.println(2);
-        System.out.println("roles: "+roles.toString());
         for (Role roleFromSet : roles) {
-            System.out.println(4);
-            //добавляем в список authorities наименования ролей, связанных с пользователем,
-            //получаемые через метод getAuthority() интерфейса
-            //org.springframework.security.core.GrantedAuthority, который реализовали в
-            //сущности Role. Метод возвращает значние String поля Role.name
             authorities.add(new SimpleGrantedAuthority(roleFromSet.getAuthority()));
         }
-        System.out.println("zapisali roli");
         return authorities;
     }
 

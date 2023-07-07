@@ -31,7 +31,6 @@ public class AdminController {
     public String index(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        System.out.println("Perehd po / na /index.html");
         return "admin/list_of_users";
     }
 
@@ -39,7 +38,6 @@ public class AdminController {
     public String showAllUsers(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        System.out.println("Open /admin/list_users (pages/list_of_users.html)");
         return "admin/list_of_users";
     }
 
@@ -59,23 +57,19 @@ public class AdminController {
     @PostMapping("addUser")
     public String createNewUser(@ModelAttribute("user") @Valid User user,
                                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-            if (selectedRoles != null) {
-                Set<Role> roles = new HashSet<>();
-                for (String elemArrSelectedRoles : selectedRoles) {
-                    roles.add(roleService.getRoleByName(elemArrSelectedRoles));
-                }
-                user.setRoles(roles);
+        if (selectedRoles != null) {
+            Set<Role> roles = new HashSet<>();
+            for (String elemArrSelectedRoles : selectedRoles) {
+                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
             }
+            user.setRoles(roles);
+        }
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-
-
-
     @GetMapping("/form_edit_user")
     public String edit(@RequestParam(value = "id") Long id, Model model) {
-        System.out.println("EDIT");
         model.addAttribute("user", userService.getSingleUserById(id));
         model.addAttribute("roles", roleService.getAllRoles());
         return "admin/form_edit_user";
@@ -84,7 +78,6 @@ public class AdminController {
     @PatchMapping("/form_edit_user")
     public String update(@ModelAttribute("user") @Valid User user,
                          @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-        System.out.println("Passw from front: "+ user.getPassword());
         if (selectedRoles != null) {
             Set<Role> roles = new HashSet<>();
             for (String elemArrSelectedRoles : selectedRoles) {

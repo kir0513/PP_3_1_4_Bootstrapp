@@ -20,7 +20,8 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDao userDao;
-    private  final RoleDao roleDao;
+    private final RoleDao roleDao;
+
     @Autowired
     public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao, RoleDao roleDao) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getUsers();
     }
 
-@Transactional
+    @Transactional
     @Override
     public void saveUser(User user) {
         User newUser = new User();
@@ -42,12 +43,7 @@ public class UserServiceImpl implements UserService {
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
-        //кодируем пароль нового пользователя
         newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-
-        System.out.println("Password newuser " + newUser.getPassw());
-        //присваиваем объекту newUser роль USER если у объекта user, переданного в метод пустая роль
-        //иначе перезаписываем имеющиеся в user роли в объект newUser
         if (user.getRoles().isEmpty()) {
             newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
         } else {
@@ -57,16 +53,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         userDao.saveUser(newUser);
-            }
+    }
+
     @Transactional
     @Override
     public void update(User user) {
-
         if (user.getPassword().equals("")) {
             user.setPassw(getSingleUserById(user.getId()).getPassword());
         } else {
-                user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-            }
+            user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
         userDao.update(user);
     }
 
@@ -92,9 +88,6 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь с таким логином не найден");
         }
-
-            return user;
-
-
+        return user;
     }
 }

@@ -9,16 +9,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "roles", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Role implements GrantedAuthority {
-    //поля
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "name")
     private String name;
 
-//конструкторы, toString, гетеры и сетеры
     public Role() {
     }
 
@@ -68,7 +65,6 @@ public class Role implements GrantedAuthority {
         return Objects.hash(id, name);
     }
 
-//имплементация методов GrantedAuthority
     @Override
     public String getAuthority() {
         return getName();

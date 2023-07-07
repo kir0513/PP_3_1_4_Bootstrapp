@@ -18,6 +18,4 @@ public class Pp231SpringMvcHibernateBootApplication {
         Runtime rt = Runtime.getRuntime();
         rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
     }
-
-
 }

@@ -20,8 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-      private final UserService userService;
-     public WebSecurityConfig(@Lazy UserService userService) {
+    private final UserService userService;
+
+    public WebSecurityConfig(@Lazy UserService userService) {
         this.userService = userService;
     }
 
@@ -35,32 +36,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.formLogin()
-                // указываем страницу с формой логина
                 .loginPage("/login")
                 .failureUrl("/login_error")
-                // указываем хэндлер, содержащий в себе алгоритм действий при успешной аутентификации.
-                // Например, тут мы можем отправить пользователя с ролью админа на админку после логина,
-                // а с ролью юзер на главную страницу сайта и т.п.
                 .successHandler(new LoginSuccessHandler())
                 .loginProcessingUrl("/login")
                 .permitAll();
 
         http.logout()
-                // разрешаем делать логаут всем
                 .permitAll()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
                 .and().csrf().disable();
 
         http
-                // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
-                //страницы аутентификаци доступна всем
                 .antMatchers("/login").anonymous()
                 .antMatchers("/").anonymous()
-                // защищенные URL
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasRole("USER")
                 .anyRequest()

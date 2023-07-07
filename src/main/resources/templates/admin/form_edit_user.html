@@ -11,10 +11,6 @@
   <br>
   <a th:href="@{/logout}">Выйти</a>
   <br>
-
-<!--  <form th:method="post" th:action="@{/admin/save_or_update_user(id=${user.getId()}, login=${user.getEmail()})}"-->
-<!--        th:object="${user}">-->
-<!--  <form th:method="patch" th:action="@{/admin/user/{id}(id=${user.getId()})}" th:object="${user}">-->
   <form th:method="patch" th:action="@{/admin/form_edit_user/(id=${user.getId()})}" th:object="${user}">
 
     <p>
