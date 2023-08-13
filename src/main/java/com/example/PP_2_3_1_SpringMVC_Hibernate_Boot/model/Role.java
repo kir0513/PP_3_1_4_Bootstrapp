@@ -34,7 +34,11 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return this.name;
+        if (name.equals("ROLE_ADMIN")) {
+            return "ADMIN";
+        } else {
+            return "USER";
+        }
     }
 
     public Long getId() {
@@ -64,6 +68,7 @@ public class Role implements GrantedAuthority {
     public int hashCode() {
         return Objects.hash(id, name);
     }
+
 
     @Override
     public String getAuthority() {

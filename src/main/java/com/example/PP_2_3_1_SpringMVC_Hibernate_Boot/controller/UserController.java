@@ -10,8 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
-public class UserController {
+public class
+
+UserController {
     private final RoleService roleService;
     private final UserService userService;
 
@@ -43,4 +47,12 @@ public class UserController {
         model.addAttribute("loginError", true);
         return "login";
     }
+
+//    @GetMapping("/admin_panel")
+//    public String getAdminPage(Model model, @AuthenticationPrincipal UserDetails curUser) {
+//
+//        List<User> users = userService.getUsers();
+//        model.addAttribute("users", users);
+//        return "admin/admin_panel";
+//    }
 }
