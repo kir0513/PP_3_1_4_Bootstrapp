@@ -6,9 +6,11 @@ import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,9 +25,27 @@ public class AdminController {
     }
 
     @GetMapping
-    public String index(ModelMap model, @AuthenticationPrincipal UserDetails authenticatedUser) {
+    public String index(Model model, @AuthenticationPrincipal UserDetails curUser){ //@AuthenticationPrincipal UserDetails authenticatedUser, Principal principal) {
         List<User> list = userService.getUsers();
-       model.addAttribute("listUsers", list);
+        User user = userService.getSingleUserByLogin(curUser.getUsername());
+        System.out.println("*****");
+        model.addAttribute("listUsers", list);
+       // model.addAttribute("listUsers", list);
+        model.addAttribute("user", user);
+        System.out.println("++++++++++++");
+//        List<User> list = userService.getUsers();
+//        User currentUser = userService.getSingleUserByLogin(authenticatedUser.getUsername());
+//        System.out.println("текущий пользователь: "+currentUser);
+//        model.addAttribute("listUsers", list);
+//        model.addAttribute("currentUser", currentUser);
+//        model.addAttribute("newUser", new User());
+//        model.addAttribute("listRoles", roleService.getAllRoles());
+        //+++++++++++++++
+//        model.addAttribute("listUsers", list);
+//        model.addAttribute("roles", roleService.getAllRoles());
+//        model.addAttribute("users", userService.getUsers());
+//        model.addAttribute("usingUser", userService.getSingleUserByLogin(principal.getName()));
+       // model.addAttribute("allRoles", roleService.);
         return "admin/admin_panel";
     }
 

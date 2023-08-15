@@ -30,66 +30,80 @@
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-2">
-            <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                <a href="admin_panel.html" button type="button" class="btn btn-primary btn-lg">Admin</button></a>
-                <a href="curr_user_info" button type="button" class="btn btn-primary btn-lg">User</button></a>
+<div class="container-fluid h-100 d-flex">
+    <div class="row w-100 h-100">
+        <div style="background-color: white; padding-left: 0; padding-top: 10px; padding-right: 0" class="col-sm">
+            <div id="admin">
+                <a style="border: 0; padding-right: 155px; background-color: white; color: blue" type="button"
+                   class="btn btn-outline-secondary btn-block " href="/admin/users">Admin</a>
             </div>
-            <div class="col-lg-10">
-                <h1>
-                    <strong>Admin panel</strong>
-                </h1>
+
+            <button style="padding-right: 170px" class="btn btn-primary btn-block"
+                    onclick="window.location.href='/user'">User
+            </button>
+        </div>
+        <div class="col-sm-10">
+            <h1 id="hhh">Admin panel</h1>
+
+            <div class="col-sm-10">
+                <nav class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
+                       aria-controls="nav-home" aria-selected="true">Users table</a>
+                    <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
+                       aria-controls="nav-profile" aria-selected="false">New User</a>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <table class="table caption-top table table-striped">
+                            <caption>All users</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">FirstName</th>
+                                <th scope="col">LastName</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="user : ${listUsers}">
+                                <tr th:each="user : ${user}">
+                                    <td th:text="${user.getId()}"></td>
+                                    <td th:text="${user.getFirstName()}"/>
+                                    <td th:text="${user.getLastName()}"/>
+                                    <td th:text="${user.getAge()}"/>
+                                    <td th:text="${user.getEmail()}"/>
+                                    <td>
+                                        <th:block th:each="userRole : ${user.getRoles()}">
+                                            <span th:text="${userRole.toString()}"></span>
+                                        </th:block>
+                                    </td>
+                                    <!-- Ячейка для кнопки Edit  и  Delete  -->
+                                    <td>
+                                        <button type="button" class="btn btn-info">Edit</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <nav class="navbar navbar-light bg-light">
+                            <span class="navbar-brand mb-0 h1">Add new User</span>
+                        </nav>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col-lg-10">
-    <nav class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
-           aria-controls="nav-home" aria-selected="true">Users table</a>
-        <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
-           aria-controls="nav-profile" aria-selected="false">New User</a>
-    </nav>
-
-    <table class="table caption-top table table-striped">
-        <caption>All users</caption>
-        <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">FirstName</th>
-            <th scope="col">LastName</th>
-            <th scope="col">Age</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.getId()}"></td>
-            <td th:text="${user.getFirstName()}"/>
-            <td th:text="${user.getLastName()}"/>
-            <td th:text="${user.getAge()}"/>
-            <td th:text="${user.getEmail()}"/>
-            <td>
-                <th:block th:each="userRole : ${user.getRoles()}">
-                    <span th:text="${userRole.toString()}"></span>
-                </th:block>
-            </td>
-            <!-- Ячейка для кнопки Edit  и  Delete  -->
-            <td>
-                <button type="button" class="btn btn-info">Edit</button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
 </div>
 </body>
 </html>
