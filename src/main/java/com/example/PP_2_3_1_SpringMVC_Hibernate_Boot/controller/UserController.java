@@ -48,11 +48,4 @@ UserController {
         return "login";
     }
 
-//    @GetMapping("/admin_panel")
-//    public String getAdminPage(Model model, @AuthenticationPrincipal UserDetails curUser) {
-//
-//        List<User> users = userService.getUsers();
-//        model.addAttribute("users", users);
-//        return "admin/admin_panel";
-//    }
 }

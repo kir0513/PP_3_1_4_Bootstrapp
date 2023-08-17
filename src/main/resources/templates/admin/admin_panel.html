@@ -85,8 +85,15 @@
                                     <td>
                                         <button type="button" class="btn btn-info">Edit</button>
                                     </td>
+<!--                                    <td>-->
+<!--                                        <button type="button" class="btn btn-danger">Delete</button>-->
+<!--                                    </td>-->
                                     <td>
-                                        <button type="button" class="btn btn-danger">Delete</button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                th:attr="data-bs-target='#deleteModal'+${user.getId()}">
+                                            <a th:href="@{/admin/delete_user(id=${user.getId()})}"> Delete </a>
+
+                                        </button>
                                     </td>
                                 </tr>
                             </th:block>
@@ -98,6 +105,46 @@
                         <nav class="navbar navbar-light bg-light">
                             <span class="navbar-brand mb-0 h1">Add new User</span>
                         </nav>
+                        <div class="container">
+                            <div class="card-body" align="center">
+<!--                                <form class="text-center" th:method="POST" th:action="@{/admin/addUser}"-->
+                                <form th:method="post" th:action="@{/admin/addUser}"
+                                      id="addUser" align="center" class="row justify-content-md-center col-md-5">
+                                    <!--                                    <form th:method="post" th:action="@{/admin/addUser}" th:object="${user}">-->
+                                    <label for="username"><b>First name</b></label>
+                                    <!--                                    <input type="text" th:field="${user.firstName}" id="first_name"/>-->
+                                    <input type="text" class="form-control" th:field="${user.firstName}" id="username"
+                                           required/>
+                                    <label for="name"><b>Last name</b></label>
+                                    <input type="text" class="form-control" th:field="${user.lastName}" id="name"
+                                           required/>
+                                    <label for="age"><b>Age</b></label>
+                                    <input type="number" class="form-control" th:field="${user.age}" id="age"
+                                           required/>
+                                    <label for="email"><b>Email</b></label>
+                                    <input type="email" class="form-control" th:field="${user.email}" id="email"
+                                           required/>
+                                    <label for="password"><b>Password</b></label>
+                                    <input type="password" class="form-control" th:field="${user.passw}" id="password"
+                                           required/>
+
+                                    <br>
+                                    <label for="role"><b>Role</b></label>
+                                    <select id="role" class="form-control form-control-sm"
+                                            size="2" aria-label="size 2 select example">
+                                        <option value="1">USER</option>
+                                        <option value="2">ADMIN</option>
+                                    </select>
+                                    <br>
+
+                                    <button input type="submit" style="margin-top: 10px" class="btn btn-success"
+                                            value="Add new user">Add new user
+                                        <!--                                       <input type="submit" value="Добавить пользователя"/>-->
+
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

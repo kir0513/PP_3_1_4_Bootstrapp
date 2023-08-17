@@ -1,5 +1,6 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.controller;
 
+import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service.RoleService;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service.UserService;
@@ -10,8 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,58 +29,26 @@ public class AdminController {
     }
 
     @GetMapping
-    public String index(Model model, @AuthenticationPrincipal UserDetails curUser){ //@AuthenticationPrincipal UserDetails authenticatedUser, Principal principal) {
+    public String index(Model model, @AuthenticationPrincipal UserDetails curUser) { //@AuthenticationPrincipal UserDetails authenticatedUser, Principal principal) {
         List<User> list = userService.getUsers();
         User user = userService.getSingleUserByLogin(curUser.getUsername());
-        System.out.println("*****");
         model.addAttribute("listUsers", list);
-       // model.addAttribute("listUsers", list);
         model.addAttribute("user", user);
-        System.out.println("++++++++++++");
-//        List<User> list = userService.getUsers();
-//        User currentUser = userService.getSingleUserByLogin(authenticatedUser.getUsername());
-//        System.out.println("текущий пользователь: "+currentUser);
-//        model.addAttribute("listUsers", list);
-//        model.addAttribute("currentUser", currentUser);
-//        model.addAttribute("newUser", new User());
-//        model.addAttribute("listRoles", roleService.getAllRoles());
-        //+++++++++++++++
-//        model.addAttribute("listUsers", list);
-//        model.addAttribute("roles", roleService.getAllRoles());
-//        model.addAttribute("users", userService.getUsers());
-//        model.addAttribute("usingUser", userService.getSingleUserByLogin(principal.getName()));
-       // model.addAttribute("allRoles", roleService.);
+        model.addAttribute("emptyUser", new User());
         return "admin/admin_panel";
     }
 
-//    @GetMapping
-//    public String index(ModelMap model) {
-//        List<User> list = userService.getUsers();
-//        model.addAttribute("listUsers", list);
-//        return "admin/list_of_users";
-//    }
-//
-//    @GetMapping(value = "/list_users")
-//    public String showAllUsers(ModelMap model) {
-//        List<User> list = userService.getUsers();
-//        model.addAttribute("listUsers", list);
-//        return "admin/list_of_users";
-//    }
-//
-//    @GetMapping(value = "/show_single_user")
-//    public String showSingleUser(@RequestParam(value = "id") Long id, Model model) {
-//        model.addAttribute("user", userService.getSingleUserById(id));
-//        return "admin/show_single_user_info";
-//    }
-//
+
 //    @GetMapping("/add_user")
+//   // @GetMapping("/admin#nav-profile")
 //    public String addUser(Model model) {
 //        model.addAttribute("user", new User());
 //        model.addAttribute("roles", roleService.getAllRoles());
-//        return "admin/form_add_user";
+////        return "admin/form_add_user";
+//        return "admin/admin_panel";
 //    }
-//
-//    @PostMapping("addUser")
+
+    //    @PostMapping("addUser")
 //    public String createNewUser(@ModelAttribute("user") @Valid User user,
 //                                @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
 //        if (selectedRoles != null) {
@@ -87,33 +59,22 @@ public class AdminController {
 //            user.setRoles(roles);
 //        }
 //        userService.saveUser(user);
-//        return "redirect:/admin";
+//        return "redirect:/admin_panel";
 //    }
-//
-//    @GetMapping("/form_edit_user")
-//    public String edit(@RequestParam(value = "id") Long id, Model model) {
-//        model.addAttribute("user", userService.getSingleUserById(id));
-//        model.addAttribute("roles", roleService.getAllRoles());
-//        return "admin/form_edit_user";
-//    }
-//
-//    @PatchMapping("/form_edit_user")
-//    public String update(@ModelAttribute("user") @Valid User user,
-//                         @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-//        if (selectedRoles != null) {
-//            Set<Role> roles = new HashSet<>();
-//            for (String elemArrSelectedRoles : selectedRoles) {
-//                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
-//            }
-//            user.setRoles(roles);
-//        }
-//        userService.update(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @GetMapping(value = "/delete_user")
-//    public String deleteUser(@RequestParam(value = "id") Long id, Model model) {
-//        userService.deleteUser(id);
-//        return "redirect:/admin";
-//    }
+    @PostMapping("/addUser")
+    public String createUser(@ModelAttribute("emptyUser") User user,
+                             @RequestParam(value = "checkedRoles") String[] selectResult) {
+        for (String s : selectResult) {
+            user.addRole(roleService.getRoleByName("ROLE_" + s));
+        }
+        userService.saveUser(user);
+        return "redirect:/admin";
+    }
+
+    @GetMapping(value = "/delete_user")
+    public String deleteUser(@RequestParam(value = "id") Long id, Model model) {
+        userService.deleteUser(id);
+        return "redirect:/admin";
+    }
+
 }
