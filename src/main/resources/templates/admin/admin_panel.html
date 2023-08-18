@@ -85,15 +85,10 @@
                                     <td>
                                         <button type="button" class="btn btn-info">Edit</button>
                                     </td>
-<!--                                    <td>-->
-<!--                                        <button type="button" class="btn btn-danger">Delete</button>-->
-<!--                                    </td>-->
-                                    <td>
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                th:attr="data-bs-target='#deleteModal'+${user.getId()}">
-                                            <a th:href="@{/admin/delete_user(id=${user.getId()})}"> Delete </a>
 
-                                        </button>
+                                    <td>
+                                        <a th:href="@{/admin/delete_user(id=${user.getId()})}" class="btn btn-danger">
+                                            Delete </a>
                                     </td>
                                 </tr>
                             </th:block>
@@ -107,12 +102,10 @@
                         </nav>
                         <div class="container">
                             <div class="card-body" align="center">
-<!--                                <form class="text-center" th:method="POST" th:action="@{/admin/addUser}"-->
+
                                 <form th:method="post" th:action="@{/admin/addUser}"
                                       id="addUser" align="center" class="row justify-content-md-center col-md-5">
-                                    <!--                                    <form th:method="post" th:action="@{/admin/addUser}" th:object="${user}">-->
                                     <label for="username"><b>First name</b></label>
-                                    <!--                                    <input type="text" th:field="${user.firstName}" id="first_name"/>-->
                                     <input type="text" class="form-control" th:field="${user.firstName}" id="username"
                                            required/>
                                     <label for="name"><b>Last name</b></label>
