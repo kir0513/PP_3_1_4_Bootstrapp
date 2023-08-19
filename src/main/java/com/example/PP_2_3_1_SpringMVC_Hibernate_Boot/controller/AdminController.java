@@ -37,37 +37,48 @@ public class AdminController {
         model.addAttribute("emptyUser", new User());
         return "admin/admin_panel";
     }
-
-
-//    @GetMapping("/add_user")
-//   // @GetMapping("/admin#nav-profile")
-//    public String addUser(Model model) {
-//        model.addAttribute("user", new User());
-//        model.addAttribute("roles", roleService.getAllRoles());
-////        return "admin/form_add_user";
-//        return "admin/admin_panel";
-//    }
-
-    //    @PostMapping("addUser")
-//    public String createNewUser(@ModelAttribute("user") @Valid User user,
-//                                @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-//        if (selectedRoles != null) {
-//            Set<Role> roles = new HashSet<>();
-//            for (String elemArrSelectedRoles : selectedRoles) {
-//                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
-//            }
-//            user.setRoles(roles);
-//        }
-//        userService.saveUser(user);
-//        return "redirect:/admin_panel";
-//    }
     @PostMapping("/addUser")
-    public String createUser(@ModelAttribute("emptyUser") User user,
-                             @RequestParam(value = "checkedRoles") String[] selectResult) {
-        for (String s : selectResult) {
-            user.addRole(roleService.getRoleByName("ROLE_" + s));
+    public String createNewUser(@ModelAttribute("user") @Valid User user,
+                                @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
+        if (selectedRoles != null) {
+            Set<Role> roles = new HashSet<>();
+            for (String elemArrSelectedRoles : selectedRoles) {
+                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
+            }
+            user.setRoles(roles);
         }
         userService.saveUser(user);
+        return "redirect:/admin";
+
+//    @PostMapping("/addUser")
+//    public String createUser(@ModelAttribute("emptyUser") User user,
+//                             @RequestParam(value = "checkedRoles") String[] selectResult) {
+//        for (String s : selectResult) {
+//            user.addRole(roleService.getRoleByName("ROLE_" + s));
+//        }
+//        userService.saveUser(user);
+//        return "redirect:/admin";
+    }
+
+    @GetMapping("/form_edit_user")
+    public String edit(@RequestParam(value = "id") Long id, Model model) {
+        model.addAttribute("user", userService.getSingleUserById(id));
+        model.addAttribute("roles", roleService.getAllRoles());
+//        return "admin/form_edit_user";
+        return "redirect:/admin";
+    }
+
+    @PatchMapping("/form_edit_user")
+    public String update(@ModelAttribute("user") @Valid User user,
+                         @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
+        if (selectedRoles != null) {
+            Set<Role> roles = new HashSet<>();
+            for (String elemArrSelectedRoles : selectedRoles) {
+                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
+            }
+            user.setRoles(roles);
+        }
+        userService.update(user);
         return "redirect:/admin";
     }
 

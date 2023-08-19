@@ -81,11 +81,17 @@
                                             <span th:text="${userRole.toString()}"></span>
                                         </th:block>
                                     </td>
-                                    <!-- Ячейка для кнопки Edit  и  Delete  -->
+                                    <!-- Ячейка для кнопки Edit    -->
                                     <td>
-                                        <button type="button" class="btn btn-info">Edit</button>
-                                    </td>
+                                        <div class="container">
+<!--                                            <a th:href="@{/admin/form_edit_user(id=${user.getId()})}" button type="button"-->
+<!--                                               class="btn btn-info" data-toggle="modal" data-target="#Edit">-->
+<!--                                            Edit </a>-->
+                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#Edit">Edit</button>
 
+                                        </div>
+                                    </td>
+                                    <!-- Ячейка для кнопки Delete  -->
                                     <td>
                                         <a th:href="@{/admin/delete_user(id=${user.getId()})}" class="btn btn-danger">
                                             Delete </a>
@@ -95,6 +101,8 @@
                             </tbody>
                         </table>
                     </div>
+
+<!--                 Add new User-->
 
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <nav class="navbar navbar-light bg-light">
@@ -132,8 +140,6 @@
 
                                     <button input type="submit" style="margin-top: 10px" class="btn btn-success"
                                             value="Add new user">Add new user
-                                        <!--                                       <input type="submit" value="Добавить пользователя"/>-->
-
                                     </button>
                                 </form>
                             </div>
@@ -145,5 +151,45 @@
         </div>
     </div>
 </div>
+<!--Modal Edit-->
+<div class="modal fade" id="#Edit" tabindex="-1" role="dialog" aria-labelledby="#EditLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="#EditLabe">Edit user</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form th:method="patch" th:action="@{/admin/form_edit_user/(id=${user.getId()})}" th:object="${user}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="firstNameEdit"><b>First name</b></label>
+                        <input type="text" class="form-control" th:field="${user.firstName}" id="firstNameEdit"
+                               required/>
+                        <label for="lastNameEdit"><b>Last name</b></label>
+                        <input type="text" class="form-control" th:field="${user.lastName}" id="lastNameEdit"
+                               required/>
+                        <label for="ageEdit"><b>Age</b></label>
+                        <input type="number" class="form-control" th:field="${user.age}" id="ageEdit"
+                               required/>
+                        <label for="emailEdit"><b>Email</b></label>
+                        <input type="email" class="form-control" th:field="${user.email}" id="emailEdit"
+                               required/>
+                        <label for="passwordEdit"><b>Password</b></label>
+                        <input type="password" class="form-control" th:field="${user.passw}" id="passwordEdit"
+                               required/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/modals.js}"></script>
 </body>
 </html>
