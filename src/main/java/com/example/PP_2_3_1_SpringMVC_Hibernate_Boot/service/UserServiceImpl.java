@@ -49,6 +49,9 @@ public class UserServiceImpl implements UserService {
         } else {
             Set<Role> roles = user.getRoles();
             for (Role roleInSet : roles) {
+                if(roleInSet == null) {
+                    continue;
+                }
                 newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
             }
         }

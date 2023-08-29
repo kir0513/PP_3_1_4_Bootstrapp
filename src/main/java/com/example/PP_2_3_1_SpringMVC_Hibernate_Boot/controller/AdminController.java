@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +36,15 @@ public class AdminController {
         model.addAttribute("listUsers", list);
         model.addAttribute("user", user);
         model.addAttribute("emptyUser", new User());
+        model.addAttribute("listRoles", roleService.getAllRoles());
         return "admin/admin_panel";
+    }
+
+    @GetMapping("/add_user")
+    public String addUser(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin/form_add_user";
     }
     @PostMapping("/addUser")
     public String createNewUser(@ModelAttribute("user") @Valid User user,
@@ -44,21 +53,26 @@ public class AdminController {
             Set<Role> roles = new HashSet<>();
             for (String elemArrSelectedRoles : selectedRoles) {
                 roles.add(roleService.getRoleByName(elemArrSelectedRoles));
+                System.out.println("Role_" + elemArrSelectedRoles);
+                System.out.println("Role_" + roles);
             }
             user.setRoles(roles);
         }
         userService.saveUser(user);
-        return "redirect:/admin";
 
-//    @PostMapping("/addUser")
-//    public String createUser(@ModelAttribute("emptyUser") User user,
-//                             @RequestParam(value = "checkedRoles") String[] selectResult) {
-//        for (String s : selectResult) {
-//            user.addRole(roleService.getRoleByName("ROLE_" + s));
-//        }
-//        userService.saveUser(user);
-//        return "redirect:/admin";
+/*
+ if (selectedRolesNewUser != null) {
+            Set<Role> roles = new HashSet<>();
+            for (String elemArrSelectedRoles : selectedRolesNewUser) {
+                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
+            }
+            newUser.setRoles(roles);
+        }
+        userService.createNewUser(newUser);
+ */
+        return "redirect:/admin";
     }
+
 
     @GetMapping("/form_edit_user")
     public String edit(@RequestParam(value = "id") Long id, Model model) {
