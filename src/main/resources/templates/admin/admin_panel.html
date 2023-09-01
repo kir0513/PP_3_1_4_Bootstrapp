@@ -87,8 +87,8 @@
                                             <!--                                            <a th:href="@{/admin/form_edit_user(id=${user.getId()})}" button type="button"-->
                                             <!--                                               class="btn btn-info" data-toggle="modal" data-target="#Edit">-->
                                             <!--                                            Edit </a>-->
-                                            <button type="button" class="btn btn-info" data-toggle="modal"
-                                                    data-target="#Edit">Edit
+                                            <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                                    data-bs-target="#Edit">EDIT
                                             </button>
 
                                         </div>
@@ -119,20 +119,19 @@
                                                     data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form th:method="get"
+                                            <form th:method="post"
                                                   th:action="@{/admin/delete_user(id=${user.getId()})}"
 
                                                   th:id="${'delete' + user.getId()}">
+
                                                 <label for="userIdInput"
                                                        class="form-label">UserId</label>
                                                 <input type="text" id="userIdInput" name="id"
                                                        class="form-control"
                                                        th:value="${user.getId()}"
                                                        disabled>
-                                                <!--                                                                    <label for="NameDelete"><b>First name</b></label>-->
-                                                <!--                                                                    <input type="text" class="form-control"-->
-                                                <!--                                                                           th:field="${user.firstName}" id="NameDelete"-->
-                                                <!--                                                                           required/>-->
+
+
                                                 <div>
                                                     <label for="firstNameInput"
                                                            class="form-label">First name</label>
@@ -140,11 +139,6 @@
                                                            class="form-control" th:value="${user.getFirstName()}"
                                                            disabled>
                                                 </div>
-                                                <!--                                                                    <label for="lastnameDelete"><b>Last name</b></label>-->
-                                                <!--                                                                    <input type="text" class="form-control"-->
-                                                <!--                                                                           th:field="${user.lastName}"-->
-                                                <!--                                                                           id="lastnameDelete"-->
-                                                <!--                                                                           required/>-->
                                                 <div>
                                                     <label for="lastNameNameInput"
                                                            class="form-label">Last name</label>
@@ -152,10 +146,6 @@
                                                            class="form-control" th:value="${user.getLastName()}"
                                                            disabled>
                                                 </div>
-                                                <!--                                                                    <label for="ageDelete"><b>Age</b></label>-->
-                                                <!--                                                                    <input type="number" class="form-control"-->
-                                                <!--                                                                           th:field="${user.age}" id="ageDelete"-->
-                                                <!--                                                                           required/>-->
                                                 <div>
                                                     <label for="ageInput"
                                                            class="form-label">Age</label>
@@ -163,10 +153,6 @@
                                                            class="form-control" th:value="${user.getAge()}"
                                                            disabled>
                                                 </div>
-                                                <!--                                                                    <label for="emailDelete"><b>Email</b></label>-->
-                                                <!--                                                                    <input type="email" class="form-control"-->
-                                                <!--                                                                           th:field="${user.email}" id="emailDelete"-->
-                                                <!--                                                                           required/>-->
                                                 <div>
                                                     <label for="emailInput"
                                                            class="form-label">Login</label>
@@ -174,22 +160,7 @@
                                                            class="form-control" th:value="${user.getEmail()}"
                                                            disabled>
                                                 </div>
-
                                                 <br>
-                                                <!--                                                                    <div class="form-group">-->
-                                                <!--                                                                        <label for="roleDelete"><b>Role</b></label>-->
-                                                <!--                                                                        <select id="roleDelete" class="form-select"-->
-                                                <!--                                                                                name="selectedRoles"-->
-                                                <!--                                                                                th:size="${listRoles.size()}" multiple>-->
-                                                <!--                                                                            <option-->
-                                                <!--                                                                                    th:each="role : ${listRoles}"-->
-                                                <!--                                                                                    th:selectedRoles="${user.getRoles().contains(role)}"-->
-                                                <!--                                                                                    th:name="${role}"-->
-                                                <!--                                                                                    th:text="${role}">-->
-
-                                                <!--                                                                            </option>-->
-                                                <!--                                                                        </select>-->
-                                                <!--                                                                    </div>-->
                                                 <div class="mb-3">
                                                     <label for="rolesCurrUser" class="form-label">Role</label>
                                                     <select class="form-select" id="rolesCurrUser"
@@ -284,40 +255,63 @@
 <!--END MODAL ADD NEW USER-->
 
 <!--START MODAL EDIT-->
-<div class="modal fade" id="#Edit" tabindex="-1" role="dialog" aria-labelledby="#EditLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="#EditLabe">Edit user</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <form th:method="patch" th:action="@{/admin/form_edit_user/(id=${user.getId()})}" th:object="${user}">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="firstNameEdit"><b>First name</b></label>
-                        <input type="text" class="form-control" th:field="${user.firstName}" id="firstNameEdit"
-                               required/>
-                        <label for="lastNameEdit"><b>Last name</b></label>
-                        <input type="text" class="form-control" th:field="${user.lastName}" id="lastNameEdit"
-                               required/>
-                        <label for="ageEdit"><b>Age</b></label>
-                        <input type="number" class="form-control" th:field="${user.age}" id="ageEdit"
-                               required/>
-                        <label for="emailEdit"><b>Email</b></label>
-                        <input type="email" class="form-control" th:field="${user.email}" id="emailEdit"
-                               required/>
-                        <label for="passwordEdit"><b>Password</b></label>
-                        <input type="password" class="form-control" th:field="${user.passw}" id="passwordEdit"
-                               required/>
+<div class="container">
+    <div class="card-body" align="center">
+        <div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="#EditLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="#EditLabe">Edit user</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+                    <form th:method="patch" th:action="@{/admin/form_edit_user/(id=${user.getId()})}"
+                          th:object="${user}">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="usIdInput"
+                                       class="form-label">UserId</label>
+                                <input type="text" id="usIdInput" name="id"
+                                       class="form-control"
+                                       th:value="${user.getId()}"
+                                       disabled>
+                                <label for="firstNameEdit"><b>First name</b></label>
+                                <input type="text" class="form-control" th:field="${user.firstName}" id="firstNameEdit"
+                                       required/>
+                                <label for="lastNameEdit"><b>Last name</b></label>
+                                <input type="text" class="form-control" th:field="${user.lastName}" id="lastNameEdit"
+                                       required/>
+                                <label for="ageEdit"><b>Age</b></label>
+                                <input type="number" class="form-control" th:field="${user.age}" id="ageEdit"
+                                       required/>
+                                <label for="emailEdit"><b>Email</b></label>
+                                <input type="email" class="form-control" th:field="${user.email}" id="emailEdit"
+                                       required/>
+                                <label for="passwordEdit"><b>Password</b></label>
+                                <input type="password" class="form-control" th:field="${user.passw}" id="passwordEdit"
+                                       required/>
+                                <br>
+                                <div class="mb-3">
+                                    <label for="rolesUser" class="form-label">Role</label>
+                                    <select class="form-select" id="rolesUser"
+                                            name="selectedRolesNewUser"
+                                            th:size="${user.getRoles().size()}" multiple required>
+                                        <option
+                                                th:each="role : ${user.getRoles()}"
+                                                th:name="${role}"
+                                                th:text="${role}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Edit</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
