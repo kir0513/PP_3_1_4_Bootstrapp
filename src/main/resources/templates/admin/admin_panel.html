@@ -121,43 +121,41 @@
                                         <div class="modal-body">
                                             <form th:method="post"
                                                   th:action="@{/admin/delete_user(id=${user.getId()})}"
-
+                                                  th:object="${user}"
                                                   th:id="${'delete' + user.getId()}">
 
                                                 <label for="userIdInput"
                                                        class="form-label">UserId</label>
                                                 <input type="text" id="userIdInput" name="id"
                                                        class="form-control"
-                                                       th:value="${user.getId()}"
+                                                       th:value="*{getId()}"
                                                        disabled>
-
-
                                                 <div>
                                                     <label for="firstNameInput"
                                                            class="form-label">First name</label>
                                                     <input type="text" id="firstNameInput" name="id"
-                                                           class="form-control" th:value="${user.getFirstName()}"
+                                                           class="form-control" th:value="*{getFirstName()}"
                                                            disabled>
                                                 </div>
                                                 <div>
                                                     <label for="lastNameNameInput"
                                                            class="form-label">Last name</label>
                                                     <input type="text" id="lastNameNameInput" name="id"
-                                                           class="form-control" th:value="${user.getLastName()}"
+                                                           class="form-control" th:value="*{getLastName()}"
                                                            disabled>
                                                 </div>
                                                 <div>
                                                     <label for="ageInput"
                                                            class="form-label">Age</label>
                                                     <input type="text" id="ageInput" name="id"
-                                                           class="form-control" th:value="${user.getAge()}"
+                                                           class="form-control" th:value="*{getAge()}"
                                                            disabled>
                                                 </div>
                                                 <div>
                                                     <label for="emailInput"
                                                            class="form-label">Login</label>
                                                     <input type="text" id="emailInput" name="id"
-                                                           class="form-control" th:value="${user.getEmail()}"
+                                                           class="form-control" th:value="*{getEmail()}"
                                                            disabled>
                                                 </div>
                                                 <br>
@@ -165,9 +163,9 @@
                                                     <label for="rolesCurrUser" class="form-label">Role</label>
                                                     <select class="form-select" id="rolesCurrUser"
                                                             name="selectedRolesNewUser"
-                                                            th:size="${user.getRoles().size()}" multiple disabled>
+                                                            th:size="*{getRoles().size()}" multiple disabled>
                                                         <option
-                                                                th:each="role : ${user.getRoles()}"
+                                                                th:each="role : *{getRoles()}"
                                                                 th:name="${role}"
                                                                 th:text="${role}">
                                                         </option>
@@ -195,50 +193,39 @@
                         <div class="container">
                             <div class="card-body" align="center">
 
-                                <form th:method="post" th:action="@{/admin/addUser}"
+                                <form th:action="@{/admin/addUser}" th:object="${user}" method="post"
                                       id="addUser" align="center" class="row justify-content-md-center col-md-5">
-                                    <label for="username"><b>First name</b></label>
-                                    <input type="text" class="form-control" th:field="${user.firstName}" id="username"
-                                           required/>
-                                    <label for="name"><b>Last name</b></label>
-                                    <input type="text" class="form-control" th:field="${user.lastName}" id="name"
-                                           required/>
-                                    <label for="age"><b>Age</b></label>
-                                    <input type="number" class="form-control" th:field="${user.age}" id="age"
-                                           required/>
-                                    <label for="email"><b>Email</b></label>
-                                    <input type="email" class="form-control" th:field="${user.email}" id="email"
-                                           required/>
-                                    <label for="password"><b>Password</b></label>
-                                    <input type="password" class="form-control" th:field="${user.passw}" id="password"
-                                           required/>
-
-                                    <br>
-                                    <div class="form-group">
-                                        <label for="role"><b>Role</b></label>
-                                        <select id="role" class="form-select" name="selectedRoles"
-                                                th:size="${listRoles.size()}" multiple>
-                                            <option
-                                                    th:each="role : ${listRoles}"
-                                                    th:selectedRoles="${user.getRoles().contains(role)}"
-                                                    th:name="${role}"
-                                                    th:text="${role}">
-
-                                            </option>
-                                        </select>
-                                        <!--                                        <label for="roles" class="form-label">Role</label>-->
-                                        <!--                                        <select class="form-select" id="roles" name="selectedRolesNewUser"-->
-                                        <!--                                                th:size="${listRoles.size()}" multiple>-->
-                                        <!--                                            <option-->
-                                        <!--                                                    th:each="role : ${listRoles}"-->
-                                        <!--                                                    th:selected="${role.getName().equals('ROLE_USER')}"-->
-                                        <!--                                                    th:name="${role}"-->
-                                        <!--                                                    th:text="${role}">-->
-                                        <!--                                            </option>-->
-                                        <!--                                        </select>-->
+                                    <div class="is-nod custom-form">
+                                        <label for="username"><b>First name</b></label>
+                                        <input type="text" class="form-control" th:field="*{firstName}" id="username"
+                                               required/>
+                                        <label for="name"><b>Last name</b></label>
+                                        <input type="text" class="form-control" th:field="*{lastName}" id="name"
+                                               required/>
+                                        <label for="age"><b>Age</b></label>
+                                        <input type="number" class="form-control" th:field="*{age}" id="age"
+                                               required/>
+                                        <label for="email"><b>Email</b></label>
+                                        <input type="email" class="form-control" th:field="*{email}" id="email"
+                                               required/>
+                                        <label for="password"><b>Password</b></label>
+                                        <input type="password" class="form-control" th:field="*{passw}" id="password"
+                                               required/>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="role"><b>Role</b></label>
+                                            <select id="role" class="form-select" name="selectedRoles"
+                                                    th:size="${listRoles.size()}" multiple>
+                                                <option
+                                                        th:each="role : ${listRoles}"
+                                                        th:selectedRoles="${user.getRoles().contains(role)}"
+                                                        th:name="${role}"
+                                                        th:text="${role}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <br>
                                     </div>
-                                    <br>
-
                                     <button input type="submit" style="margin-top: 10px" class="btn btn-success"
                                             value="Add new user">Add new user
                                     </button>
