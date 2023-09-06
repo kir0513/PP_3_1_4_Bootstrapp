@@ -65,8 +65,8 @@ public class AdminController {
     public String edit(@RequestParam(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.getSingleUserById(id));
         model.addAttribute("roles", roleService.getAllRoles());
-//        return "admin/form_edit_user";
-        return "redirect:/admin";
+        return "admin/form_edit_user";
+//        return "redirect:/admin";
     }
 
 //    @PatchMapping("/form_edit_user")
@@ -85,13 +85,15 @@ public class AdminController {
     @PatchMapping("/form_edit_user")
     public String update(@ModelAttribute("user") @Valid User user,
                          @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
+        System.out.println(user);
         if (selectedRoles != null) {
             Set<Role> roles = new HashSet<>();
             for (String elemArrSelectedRoles : selectedRoles) {
-                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
+                roles.add(roleService.getRoleByName("ROLE_" + elemArrSelectedRoles));
             }
             user.setRoles(roles);
         }
+        System.out.println(user);
         userService.update(user);
         return "redirect:/admin";
     }
