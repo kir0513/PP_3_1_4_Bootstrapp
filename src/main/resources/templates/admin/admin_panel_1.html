@@ -58,6 +58,7 @@
                     <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
                        aria-controls="nav-profile" aria-selected="false">New User</a>
                 </nav>
+                <!--Start вкладки All Users -->
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <table class="table caption-top table table-striped">
@@ -287,15 +288,66 @@
                                                 </div>
                                             </div>
                                         </div>
-<!--                                        END MODAL DELETE-->
+                                        <!--        END MODAL DELETE-->
                                     </td>
                                 </tr>
                             </th:block>
                             </tbody>
-
                         </table>
                     </div>
                 </div>
+                <!--End вкладки All Users -->
+                <!--Start вкладки New User -->
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-brand mb-0 h1">Add new User</span>
+                    </nav>
+                    <!--        START MODAL ADD USER-->
+                    <div class="container">
+                        <div class="card-body" align="center">
+
+                            <form th:action="@{/admin/addUser}" th:object="${emptyUser}" method="post"
+                                  id="addUser" align="center" class="row justify-content-md-center col-md-5">
+                                <div class="is-nod custom-form">
+                                    <label for="username"><b>First name</b></label>
+                                    <input type="text" class="form-control" th:field="*{firstName}" id="username" placeholder="First name"
+                                           required/>
+                                    <label for="name"><b>Last name</b></label>
+                                    <input type="text" class="form-control" th:field="*{lastName}" id="name" placeholder="Last name"
+                                           required/>
+                                    <label for="age"><b>Age</b></label>
+                                    <input type="number" class="form-control" th:field="*{age}" id="age"  placeholder="Age"
+                                           required>
+                                    <label for="email"><b>Email</b></label>
+                                    <input type="email" class="form-control" th:field="*{email}" id="email" placeholder="Email"
+                                           required/>
+                                    <label for="password"><b>Password</b></label>
+                                    <input type="password" class="form-control" th:field="*{passw}" id="password" placeholder="Password"
+                                           required/>
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="role"><b>Role</b></label>
+                                        <select id="role" class="form-select" name="selectedRoles"
+                                                th:size="${listRoles.size()}" multiple>
+                                            <option
+                                                    th:each="role : ${listRoles}"
+                                                    th:selectedRoles="${user.getRoles().contains(role)}"
+                                                    th:name="${role}"
+                                                    th:text="${role}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <br>
+                                </div>
+                                <button input type="submit" style="margin-top: 10px" class="btn btn-success"
+                                        value="Add new user">Add new user
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <!--        END MODAL ADD USER-->
+                </div>
+                <!--End вкладки New User -->
             </div>
         </div>
         <!--     End   For Admin-->
