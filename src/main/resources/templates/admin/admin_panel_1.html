@@ -95,11 +95,12 @@
                                         <!--START MODAL EDIT-->
                                         <div class="container">
                                             <div class="card-body" align="center">
-                                                <div class="modal fade" th:id="${'Edit' + user.id}" tabindex="-1" role="dialog"
+                                                <div class="modal fade" th:id="${'Edit' + user.id}" tabindex="-1"
+                                                     role="dialog"
                                                      aria-labelledby="#EditLabel">
                                                     <div class="modal-dialog" role="document">
-<!--                                                <div class="modal fade" th:id="${'#Edit' + user.id}" tabindex="-1">-->
-<!--                                               <div class="modal-dialog">&ndash;&gt;-->
+                                                        <!--                                                <div class="modal fade" th:id="${'#Edit' + user.id}" tabindex="-1">-->
+                                                        <!--                                               <div class="modal-dialog">&ndash;&gt;-->
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h4 class="modal-title" id="#EditLabe">Edit user</h4>
@@ -138,14 +139,20 @@
                                                                                th:value="${user.getLastName()}"
                                                                                required>
                                                                     </div>
-                                                                    <label for="ageEdit"><b>Age</b></label>
-                                                                    <input type="number" class="form-control"
-                                                                           th:value="${user.getAge()}" id="ageEdit"
-                                                                           required/>
-                                                                   <label for="emailEdit"><b>Email</b></label>
-                                                                    <input type="email" class="form-control"
-                                                                           th:value="${user.getEmail()}" id="emailEdit"
-                                                                           required/>
+                                                                    <div>
+                                                                        <label for="ageEditInput"
+                                                                               class="form-label">Age</label>
+                                                                        <input type="number" id="ageEditInput" name="age"
+                                                                               class="form-control" th:value="${user.getAge()}"
+                                                                               required>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="emailEdit"
+                                                                               class="form-label">Email</label>
+                                                                        <input type="text" id="emailEdit" name="email"
+                                                                               class="form-control" th:value="${user.getEmail()}"
+                                                                               required>
+                                                                    </div>
                                                                     <div>
                                                                         <label for="passwordEditInput"
                                                                                class="form-label">Password</label>
@@ -168,8 +175,12 @@
                                                                     </select>
                                                                     <br>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close
+                                                                        </button>
+                                                                        <button type="submit" class="btn btn-primary">
+                                                                            Edit
+                                                                        </button>
                                                                     </div>
                                                                 </form>
                                                             </div>
