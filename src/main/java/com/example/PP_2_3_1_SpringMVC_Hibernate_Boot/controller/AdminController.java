@@ -66,22 +66,8 @@ public class AdminController {
         model.addAttribute("user", userService.getSingleUserById(id));
         model.addAttribute("roles", roleService.getAllRoles());
         return "admin/form_edit_user";
-//        return "redirect:/admin";
     }
 
-//    @PatchMapping("/form_edit_user")
-//    public String update(@ModelAttribute("user") @Valid User user,
-//                         @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-//        if (selectedRoles != null) {
-//            Set<Role> roles = new HashSet<>();
-//            for (String elemArrSelectedRoles : selectedRoles) {
-//                roles.add(roleService.getRoleByName(elemArrSelectedRoles));
-//            }
-//            user.setRoles(roles);
-//        }
-//        userService.update(user);
-//        return "redirect:/admin";
-//    }
     @PatchMapping("/form_edit_user")
     public String update(@ModelAttribute("user") @Valid User user,
                          @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
@@ -98,7 +84,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/delete_user")
+    @PostMapping(value = "/delete_user")
     public String deleteUser(@RequestParam(value = "id") Long id, Model model) {
         userService.deleteUser(id);
         return "redirect:/admin";
