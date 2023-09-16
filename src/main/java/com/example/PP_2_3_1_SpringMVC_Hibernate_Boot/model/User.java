@@ -1,7 +1,5 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model;
 
-
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +10,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.*;
-
 
 @Entity
 @Table(name = "user_security")
@@ -126,9 +123,9 @@ public class User implements UserDetails {
         this.passw = passw;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
+//    public boolean isEnabled() {
+//        return enabled;
+//    }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -171,13 +168,16 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();
-        System.out.println("roles: "+roles.toString());
+        System.out.println("roles: " + roles.toString());
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role roleFromSet : roles) {
             authorities.add(new SimpleGrantedAuthority(roleFromSet.getAuthority()));
         }
         return authorities;
     }
+    @Override
+    public boolean isEnabled() {
+        return true;}
 
     @Override
     public String getPassword() {
@@ -206,3 +206,4 @@ public class User implements UserDetails {
 
 
 }
+

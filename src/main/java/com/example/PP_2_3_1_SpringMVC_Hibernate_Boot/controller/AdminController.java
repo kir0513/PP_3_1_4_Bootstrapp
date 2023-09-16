@@ -8,12 +8,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +34,7 @@ public class AdminController {
         model.addAttribute("user", user);
         model.addAttribute("emptyUser", new User());
         model.addAttribute("listRoles", roleService.getAllRoles());
-        return "admin/admin_panel_1";
+        return "admin/admin_panel_2";
     }
 
     @GetMapping("/add_user")
@@ -60,6 +57,12 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/user")
+    public String helloPage(Model model, @AuthenticationPrincipal UserDetails curUser) {
+        User user = userService.getSingleUserByLogin(curUser.getUsername());
+        model.addAttribute("user", user);
+        return "user/user_panel";
+    }
 
     @GetMapping("/form_edit_user")
     public String edit(@RequestParam(value = "id") Long id, Model model) {

@@ -1,6 +1,4 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.service;
-
-
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.RoleDao;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao.UserDao;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
@@ -14,83 +12,83 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-
-@Service
-@Transactional
-public class UserServiceImpl implements UserService {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserDao userDao;
-    private final RoleDao roleDao;
-
-    @Autowired
-    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao, RoleDao roleDao) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.userDao = userDao;
-        this.roleDao = roleDao;
-    }
-
-    @Override
-    public List<User> getUsers() {
-        return userDao.getUsers();
-    }
-
+    @Service
     @Transactional
-    @Override
-    public void saveUser(User user) {
-        User newUser = new User();
-        newUser.setAge(user.getAge());
-        newUser.setEnabled(user.isEnabled());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-        if (user.getRoles().isEmpty()) {
-            newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
-        } else {
-            Set<Role> roles = user.getRoles();
-            for (Role roleInSet : roles) {
-                if(roleInSet == null) {
-                    continue;
+    public class UserServiceImpl implements UserService {
+        private final BCryptPasswordEncoder bCryptPasswordEncoder;
+        private final UserDao userDao;
+        private final RoleDao roleDao;
+
+        @Autowired
+        public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao, RoleDao roleDao) {
+            this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+            this.userDao = userDao;
+            this.roleDao = roleDao;
+        }
+
+        @Override
+        public List<User> getUsers() {
+            return userDao.getUsers();
+        }
+
+        @Transactional
+        @Override
+        public void saveUser(User user) {
+            User newUser = new User();
+            newUser.setAge(user.getAge());
+           // newUser.setEnabled(user.isEnabled());
+            newUser.setFirstName(user.getFirstName());
+            newUser.setLastName(user.getLastName());
+            newUser.setEmail(user.getEmail());
+            newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+            if (user.getRoles().isEmpty()) {
+                newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
+            } else {
+                Set<Role> roles = user.getRoles();
+                for (Role roleInSet : roles) {
+                    if(roleInSet == null) {
+                        continue;
+                    }
+                    newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
                 }
-                newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
             }
+            userDao.saveUser(newUser);
         }
-        userDao.saveUser(newUser);
-    }
 
-    @Transactional
-    @Override
-    public void update(User user) {
-        if (user.getPassword().equals("")) {
-            user.setPassw(getSingleUserById(user.getId()).getPassword());
-        } else {
-            user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+        @Transactional
+        @Override
+        public void update(User user) {
+            if (user.getPassword().equals("")) {
+                user.setPassw(getSingleUserById(user.getId()).getPassword());
+            } else {
+                user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+            }
+            userDao.update(user);
         }
-        userDao.update(user);
-    }
 
-    @Override
-    public User getSingleUserById(Long id) {
-        return userDao.getSingleUserById(id);
-    }
-
-    @Override
-    public User getSingleUserByLogin(String login) {
-        return userDao.getSingleUserByLogin(login);
-    }
-
-    @Transactional
-    @Override
-    public void deleteUser(Long id) {
-        userDao.deleteUser(id);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userDao.getSingleUserByLogin(login);
-        if (user == null) {
-            throw new UsernameNotFoundException("Пользователь с таким логином не найден");
+        @Override
+        public User getSingleUserById(Long id) {
+            return userDao.getSingleUserById(id);
         }
-        return user;
+
+        @Override
+        public User getSingleUserByLogin(String login) {
+            return userDao.getSingleUserByLogin(login);
+        }
+
+        @Transactional
+        @Override
+        public void deleteUser(Long id) {
+            userDao.deleteUser(id);
+        }
+
+        @Override
+        public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+            User user = userDao.getSingleUserByLogin(login);
+            if (user == null) {
+                throw new UsernameNotFoundException("Пользователь с таким логином не найден");
+            }
+            return user;
+        }
     }
-}
+

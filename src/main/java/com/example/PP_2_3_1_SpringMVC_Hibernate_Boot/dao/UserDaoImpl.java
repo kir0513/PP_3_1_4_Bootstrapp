@@ -1,6 +1,5 @@
 package com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.dao;
 
-import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.Role;
 import com.example.PP_2_3_1_SpringMVC_Hibernate_Boot.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class UserDaoImpl implements UserDao {
