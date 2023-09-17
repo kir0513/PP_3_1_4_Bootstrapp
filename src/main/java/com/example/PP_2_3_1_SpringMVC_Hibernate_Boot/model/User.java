@@ -123,10 +123,6 @@ public class User implements UserDetails {
         this.passw = passw;
     }
 
-//    public boolean isEnabled() {
-//        return enabled;
-//    }
-
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-    //
+
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 

@@ -73,12 +73,12 @@
                         </div>
                     </nav>
 
-                    <!--Это панель, где первая вкладка - button "Users table" под id "nav-users_table-tab",которая вызывает блок под id "#nav-users_table",
+                    <!--Панель, где первая вкладка - button "Users table" под id "nav-users_table-tab",которая вызывает блок под id "#nav-users_table",
                     Состоит из таблицы юзеров, в которой есть 5 обычных полей (ID,First Name,Last Name,Age,Email,Role) и
                     две кнопки, под которые прописаны модальные окна (Edit и Delete)
                     И вторая вкладка button "New user" под id "nav-new_user-tab", которая вызывает блок под id "#nav-new_user"-->
 
-                    <!--Это блок список юзеров под id #nav-users_table", который раскрывается, когда нажимаешь button "Users table"-->
+                    <!--Блок список юзеров под id #nav-users_table", который раскрывается, когда нажимаешь button "Users table"-->
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-users_table" role="tabpanel"
                              aria-labelledby="nav-users_table-tab">
@@ -242,7 +242,7 @@
                                                                     data-bs-dismiss="modal"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form th:method="post"
+                                                            <form th:method="delete"
                                                                   th:action="@{/admin/delete_user(id=${user.getId()})}"
                                                                   th:id="${'Delete' + user.getId()}"
                                                                   th:object="${user}">

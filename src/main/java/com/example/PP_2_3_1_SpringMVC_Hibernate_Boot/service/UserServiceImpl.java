@@ -36,7 +36,6 @@ import java.util.Set;
         public void saveUser(User user) {
             User newUser = new User();
             newUser.setAge(user.getAge());
-           // newUser.setEnabled(user.isEnabled());
             newUser.setFirstName(user.getFirstName());
             newUser.setLastName(user.getLastName());
             newUser.setEmail(user.getEmail());
