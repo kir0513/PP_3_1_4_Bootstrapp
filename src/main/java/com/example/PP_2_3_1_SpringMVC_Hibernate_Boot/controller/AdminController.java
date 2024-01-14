@@ -44,35 +44,47 @@ public class AdminController {
         return "admin/form_add_user";
     }
     @PostMapping("/addUser")
-    public String createNewUser(@ModelAttribute("user") @Valid User user,
+    public String createNewUser(@ModelAttribute("user") @Valid User user, Model model,
                                 @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
-        if (selectedRoles != null) {
-            Set<Role> roles = new HashSet<>();
-            for (String elemArrSelectedRoles : selectedRoles) {
-                roles.add(roleService.getRoleByName("ROLE_" + elemArrSelectedRoles));
-            }
-            user.setRoles(roles);
-        }
+        model.addAttribute( "selectedRoles", roleService.getAllRoles()); //Добавили все роли из БД
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/user")
-    public String helloPage(Model model, @AuthenticationPrincipal UserDetails curUser) {
-        User user = userService.getSingleUserByLogin(curUser.getUsername());
-        model.addAttribute("user", user);
-        return "user/user_panel";
-    }
+//    @GetMapping("/user")
+//    public String helloPage(Model model, @AuthenticationPrincipal UserDetails curUser) {
+//        User user = userService.getSingleUserByLogin(curUser.getUsername());
+//        model.addAttribute("user", user);
+//        return "user/curr_user_info";
+//    }
 
-    @GetMapping("/form_edit_user")
-    public String edit(@RequestParam(value = "id") Long id, Model model) {
-        model.addAttribute("user", userService.getSingleUserById(id));
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "admin/form_edit_user";
-    }
+//    @GetMapping("/form_edit_user")
+//    public String edit(@RequestParam(value = "id") Long id, Model model) {
+//        System.out.println("++++++++++");
+//        model.addAttribute("user", userService.getSingleUserById(id));
+//        model.addAttribute("roles", roleService.getAllRoles());
+//        System.out.println("++++++++++");
+//        return "admin/form_edit_user";
+//    }
+//
+//    @PatchMapping("/form_edit_user/{id}")
+//    public String update(@ModelAttribute("user") @Valid User user, Model model, @RequestParam(value = "id") Long id,
+//                         @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
+//        System.out.println("////////////");
+//        model.addAttribute( "selectedRoles", roleService.getAllRoles());
+//        userService.update(user, id);
+//        System.out.println("/////////");
+//        return "redirect:/admin";
+//    }
+@GetMapping("/form_edit_user")
+public String edit(@RequestParam(value = "id") Long id, Model model) {
+    model.addAttribute("user", userService.getSingleUserById(id));
+    model.addAttribute("roles", roleService.getAllRoles());
+    return "admin/form_edit_user";
+}
 
     @PatchMapping("/form_edit_user")
-    public String update(@ModelAttribute("user") @Valid User user,
+    public String update(@ModelAttribute("user") @Valid User user, @RequestParam(value = "id") Long id,
                          @RequestParam(value = "selectedRoles", required = false) String[] selectedRoles) {
         System.out.println(user);
         if (selectedRoles != null) {
@@ -83,7 +95,7 @@ public class AdminController {
             user.setRoles(roles);
         }
         System.out.println(user);
-        userService.update(user);
+        userService.update(user, id);
         return "redirect:/admin";
     }
 

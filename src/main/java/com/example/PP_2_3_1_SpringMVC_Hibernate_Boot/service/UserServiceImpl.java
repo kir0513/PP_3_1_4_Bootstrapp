@@ -18,12 +18,14 @@ import java.util.Set;
         private final BCryptPasswordEncoder bCryptPasswordEncoder;
         private final UserDao userDao;
         private final RoleDao roleDao;
+        private final RoleService roleService;
 
         @Autowired
-        public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao, RoleDao roleDao) {
+        public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, UserDao userDao, RoleDao roleDao, RoleService roleService) {
             this.bCryptPasswordEncoder = bCryptPasswordEncoder;
             this.userDao = userDao;
             this.roleDao = roleDao;
+            this.roleService = roleService;
         }
 
         @Override
@@ -40,29 +42,39 @@ import java.util.Set;
             newUser.setLastName(user.getLastName());
             newUser.setEmail(user.getEmail());
             newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-            if (user.getRoles().isEmpty()) {
-                newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
-            } else {
-                Set<Role> roles = user.getRoles();
-                for (Role roleInSet : roles) {
-                    if(roleInSet == null) {
-                        continue;
-                    }
-                    newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
-                }
-            }
+            getRole(newUser);
             userDao.saveUser(newUser);
         }
 
         @Transactional
         @Override
-        public void update(User user) {
-            if (user.getPassword().equals("")) {
-                user.setPassw(getSingleUserById(user.getId()).getPassword());
+        public void update(User updateUser, Long id) {
+            User user_from_DB = userDao.getSingleUserById(id);
+            user_from_DB.setFirstName(updateUser.getFirstName());
+            user_from_DB.setLastName(updateUser.getLastName());
+            user_from_DB.setAge(updateUser.getAge());
+            user_from_DB.setEmail(updateUser.getEmail());
+            user_from_DB.setRoles(updateUser.getRoles());
+            if (updateUser.getPassword().equals("")) {
+                updateUser.setPassw(getSingleUserById(updateUser.getId()).getPassword());
             } else {
-                user.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
+                updateUser.setPassw(bCryptPasswordEncoder.encode(updateUser.getPassword()));
             }
-            userDao.update(user);
+            userDao.update(updateUser, id);
+        }
+
+        private void getRole(User user) {
+            if (roleService.getAllRoles().isEmpty()) {
+                user.addRole(roleDao.getRoleByName("ROLE_USER"));
+            } else {
+                Set<Role> roles = roleService.getAllRoles();
+                for (Role roleInSet : roles) {
+                    if(roleInSet == null) {
+                        continue;
+                    }
+                    user.addRole(roleDao.getRoleByName(roleInSet.getName()));
+                }
+            }
         }
 
         @Override
