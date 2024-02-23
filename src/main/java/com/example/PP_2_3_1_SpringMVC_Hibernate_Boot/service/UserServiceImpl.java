@@ -42,7 +42,17 @@ import java.util.Set;
             newUser.setLastName(user.getLastName());
             newUser.setEmail(user.getEmail());
             newUser.setPassw(bCryptPasswordEncoder.encode(user.getPassword()));
-            getRole(newUser);
+            if (user.getRoles().isEmpty()) {
+                newUser.addRole(roleDao.getRoleByName("ROLE_USER"));
+            } else {
+                Set<Role> roles = user.getRoles();
+                for (Role roleInSet : roles) {
+                    if(roleInSet == null) {
+                        continue;
+                    }
+                    newUser.addRole(roleDao.getRoleByName(roleInSet.getName()));
+                }
+            }
             userDao.saveUser(newUser);
         }
 
@@ -54,6 +64,7 @@ import java.util.Set;
             user_from_DB.setLastName(updateUser.getLastName());
             user_from_DB.setAge(updateUser.getAge());
             user_from_DB.setEmail(updateUser.getEmail());
+           // user_from_DB.setRoles(updateUser.getRoles());
             user_from_DB.setRoles(updateUser.getRoles());
             if (updateUser.getPassword().equals("")) {
                 updateUser.setPassw(getSingleUserById(updateUser.getId()).getPassword());
@@ -61,20 +72,6 @@ import java.util.Set;
                 updateUser.setPassw(bCryptPasswordEncoder.encode(updateUser.getPassword()));
             }
             userDao.update(updateUser, id);
-        }
-
-        private void getRole(User user) {
-            if (roleService.getAllRoles().isEmpty()) {
-                user.addRole(roleDao.getRoleByName("ROLE_USER"));
-            } else {
-                Set<Role> roles = roleService.getAllRoles();
-                for (Role roleInSet : roles) {
-                    if(roleInSet == null) {
-                        continue;
-                    }
-                    user.addRole(roleDao.getRoleByName(roleInSet.getName()));
-                }
-            }
         }
 
         @Override
